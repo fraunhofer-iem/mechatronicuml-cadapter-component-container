@@ -35,7 +35,7 @@ public class Main extends AbstractAcceleoGenerator {
      *
      * @generated
      */
-    public static final String MODULE_FILE_NAME = "org/muml/container/codegen/c/main";
+    public static final String MODULE_FILE_NAME = "/org/muml/c/adapter/container/main";
     
     /**
      * The name of the templates that are to be generated.
@@ -415,33 +415,6 @@ public class Main extends AbstractAcceleoGenerator {
         if (!isInWorkspace(org.muml.pim.runnable.RunnablePackage.class)) {
             resourceSet.getPackageRegistry().put(org.muml.pim.runnable.RunnablePackage.eINSTANCE.getNsURI(), org.muml.pim.runnable.RunnablePackage.eINSTANCE);
         }
-        if (!isInWorkspace(org.muml.psm.PsmPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.muml.psm.PsmPackage.eINSTANCE.getNsURI(), org.muml.psm.PsmPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.muml.psm.allocation.AllocationPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.muml.psm.allocation.AllocationPackage.eINSTANCE.getNsURI(), org.muml.psm.allocation.AllocationPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.muml.psm.properties.PropertiesPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.muml.psm.properties.PropertiesPackage.eINSTANCE.getNsURI(), org.muml.psm.properties.PropertiesPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.muml.psm.psm_realtimestatechart.Psm_realtimestatechartPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.muml.psm.psm_realtimestatechart.Psm_realtimestatechartPackage.eINSTANCE.getNsURI(), org.muml.psm.psm_realtimestatechart.Psm_realtimestatechartPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.muml.psm.psm_realtimestatechart.realtimestatechartparameter.RealtimestatechartparameterPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.muml.psm.psm_realtimestatechart.realtimestatechartparameter.RealtimestatechartparameterPackage.eINSTANCE.getNsURI(), org.muml.psm.psm_realtimestatechart.realtimestatechartparameter.RealtimestatechartparameterPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.muml.psm.psm_realtimestatechart.realtimestatechartparameterbinding.RealtimestatechartparameterbindingPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.muml.psm.psm_realtimestatechart.realtimestatechartparameterbinding.RealtimestatechartparameterbindingPackage.eINSTANCE.getNsURI(), org.muml.psm.psm_realtimestatechart.realtimestatechartparameterbinding.RealtimestatechartparameterbindingPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.muml.psm.psm_instance.Psm_instancePackage.class)) {
-            resourceSet.getPackageRegistry().put(org.muml.psm.psm_instance.Psm_instancePackage.eINSTANCE.getNsURI(), org.muml.psm.psm_instance.Psm_instancePackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.muml.psm.portapimapping.PortapimappingPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.muml.psm.portapimapping.PortapimappingPackage.eINSTANCE.getNsURI(), org.muml.psm.portapimapping.PortapimappingPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.muml.psm.apiexpressions.ApiexpressionsPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.muml.psm.apiexpressions.ApiexpressionsPackage.eINSTANCE.getNsURI(), org.muml.psm.apiexpressions.ApiexpressionsPackage.eINSTANCE);
-        }
         if (!isInWorkspace(org.muml.pm.hardware.HardwarePackage.class)) {
             resourceSet.getPackageRegistry().put(org.muml.pm.hardware.HardwarePackage.eINSTANCE.getNsURI(), org.muml.pm.hardware.HardwarePackage.eINSTANCE);
         }
@@ -459,9 +432,6 @@ public class Main extends AbstractAcceleoGenerator {
         }
         if (!isInWorkspace(org.muml.pm.hardware.hwresourceinstance.HwresourceinstancePackage.class)) {
             resourceSet.getPackageRegistry().put(org.muml.pm.hardware.hwresourceinstance.HwresourceinstancePackage.eINSTANCE.getNsURI(), org.muml.pm.hardware.hwresourceinstance.HwresourceinstancePackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.muml.psm.muml_container.Muml_containerPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.muml.psm.muml_container.Muml_containerPackage.eINSTANCE.getNsURI(), org.muml.psm.muml_container.Muml_containerPackage.eINSTANCE);
         }
         
         /*

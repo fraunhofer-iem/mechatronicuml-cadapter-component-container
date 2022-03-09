@@ -12,11 +12,11 @@
 	'http://www.muml.org/pm/hardware/1.0.0',
 	'http://www.muml.org/psm/muml_container/0.5.0')/]
 
-[import org::muml::container::codegen::c::MainFile /]
-[import org::muml::container::codegen::c::MakeFile /]
-[import org::muml::container::codegen::c::container::Container/]
-[import org::muml::container::codegen::c::container::ECUIdentifier/]
-[import org::muml::container::codegen::c::container::ContainerHeader/]
+[import org::muml::c::adapter::container::MainFile /]
+[import org::muml::c::adapter::container::MakeFile /]
+[import org::muml::c::adapter::container::container::Container/]
+[import org::muml::c::adapter::container::container::ECUIdentifier/]
+[import org::muml::c::adapter::container::container::ContainerHeader/]
 [template public generate(systemConfig : DeploymentConfiguration)]
 	
 	[comment @main /]

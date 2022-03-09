@@ -20,7 +20,7 @@
 				'http://www.opendds.org/modeling/schemas/Application/1.0',
 				'http://www.opendds.org/modeling/schemas/Topics/1.0')/]
 
-[import org::muml::codegen::componenttype::c::queries::stringQueries/]
+[import org::muml::c::adapter::componenttype::queries::stringQueries/]
 
 
 [query public getDDSFileName (dummy:OclAny) : String = 'MUML_DDS' /]

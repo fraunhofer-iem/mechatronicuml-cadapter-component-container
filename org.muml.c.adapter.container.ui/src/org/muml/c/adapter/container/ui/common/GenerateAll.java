@@ -105,7 +105,7 @@ public class GenerateAll {
 		monitor.worked(1);
 		String generationID = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID(
 				"org.muml.c.adapter.container", "org.muml.c.adapter.container.Main", modelURI.toString(),
-				targetFolder.getFullPath().toString(), new ArrayList<String>());
+				targetFolder.getFullPath().toString(), new ArrayList<String>()); 
 		gen0.setGenerationID(generationID);
 		
 		long start = System.currentTimeMillis();
