@@ -5,6 +5,7 @@
 		<accessrules>
 			<accessrule kind="accessible" pattern="org/muml/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/emf/**"/>
+			<accessrule kind="accessible" pattern="org/eclipse/acceleo/**"/>
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
