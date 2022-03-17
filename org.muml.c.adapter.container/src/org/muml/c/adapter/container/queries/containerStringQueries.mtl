@@ -75,3 +75,10 @@ endif
 
 [query public getIdentifierVariableName (componentInstance: ComponentInstance) : String = 
 'CI_'+componentInstance.getName().toUpperCase()+componentInstance.componentType.getName().toUpperCase()/]
+
+[**
+ * A second query to retrieve the IdentifierVariableName without accessing the componentType.name via a method (throws errors occasionally).
+ * @param componentInstance the componentInstance to get the IntentifierVariableName for.
+*/]
+[query public getIdentifierVariableNameV2 (componentInstance: ComponentInstance) : String = 
+'CI_'+componentInstance.getName().toUpperCase()+componentInstance.componentType.name.toUpperCase()/]

@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [**
  * This module contains all templates, that are used to generate the Configuration-files
- * for a given Container.
+ * for a given Container. Duplicated from org.muml.c.adapter.container.container due to necessary adaptions.
  */]
 [module MainFile('http://www.muml.org/pim/connector/1.0.0', 'http://www.muml.org/pim/behavior/1.0.0',
 				'http://www.muml.org/core/1.0.0',
@@ -25,7 +25,8 @@
 [import org::muml::c::adapter::container::container::ContainerBuilder/]
 [import org::muml::c::adapter::container::container::Container/]
 [template public generateMainFile(ecuConfig: ECUConfiguration, path : String, useSubDir : Boolean)]
-	[file (path+'main.ino', false, 'UTF-8')]
+	[comment Arduino sketches' main-files have to be called just as their parent directory - so don't call them main.ino! /]
+	[file (path+ecuConfig.structuredResourceInstance.name+'.ino', false, 'UTF-8')]
 #include "[if (useSubDir)]lib/[/if]Debug.h"
 	[for (container : ComponentContainer | ecuConfig.componentContainers)]
 #include "[container.getFileName(container, true, useSubDir)/]"
@@ -36,32 +37,31 @@
 //variable for component Instances
 [for (ci : ComponentInstance | cis)]
 	[if (ci.componentType.oclIsKindOf(AtomicComponent))]
-			[ci.componentType.getClassName()/]* atomic_c[i/];
+[ci.componentType.getClassName()/]* atomic_c[i/];
 	[/if]
 [/for]
+
 [for (ci : ComponentInstance | cis->filter(AtomicComponentInstance)->select(c:AtomicComponentInstance |  c.componentType=ComponentKind::SOFTWARE_COMPONENT)->asOrderedSet())]
 [/for]
 int setup(){
 	[for (ci : ComponentInstance | cis)]
 		[if (ci.componentType.oclIsKindOf(AtomicComponent))]
-			atomic_c[i/]= [ci.componentType.getContainerComponentCreateMethodName()/]([ci.getIdentifierVariableName()/]);
+	atomic_c[i/]= [ci.componentType.getContainerComponentCreateMethodName()/]([ci.getIdentifierVariableName()/]);
 		[/if]
 
 	[/for]
-#ifdef DEBUG
-Serial.begin(9600);
-Serial.println("Initialization done...start execution.\n");
-#endif
+	#ifdef DEBUG
+	Serial.begin(9600);
+	Serial.println("Initialization done...start execution.\n");
+	#endif
 }
 
 void loop(){
-
 	[for (ci : ComponentInstance | cis)]
 		[if (ci.componentType.oclIsKindOf(AtomicComponent))]
 			[ci.componentType.getProcessMethodName()/](atomic_c[i/]);
 		[/if]
 	[/for]
-	}
 }	
 
 [/let]

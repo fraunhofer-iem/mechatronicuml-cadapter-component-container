@@ -3,7 +3,8 @@
 	'http://www.muml.org/pm/hardware/hwresourceinstance/1.0.0',
 	'http://www.muml.org/core/1.0.0')/]
 
-[import org::muml::arduino::adapter::container::main::MainFile]
+[import org::muml::arduino::adapter::container::main::MainFile /]
+[import org::muml::arduino::adapter::container::container::ECUIdentifier /]
 
 [template public generateArduinoContainers(deploymentConfig : DeploymentConfiguration)]
 [comment @main/]
@@ -18,6 +19,7 @@ The deploymentConfig has [deploymentConfig.ecuConfigurations->asSequence()->size
 
 [for (ecuConfig : ECUConfiguration | deploymentConfig.ecuConfigurations)]
 	[ecuConfig.generateMainFile(ecuConfig.structuredResourceInstance.name+'/', true)/]
+	[ecuConfig.generateECUIdentifier(true, ecuConfig.structuredResourceInstance.name + '/') /]
 [/for]
 
 [/template]
