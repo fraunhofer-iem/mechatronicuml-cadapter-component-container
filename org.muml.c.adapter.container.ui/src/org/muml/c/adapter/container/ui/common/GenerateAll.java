@@ -75,14 +75,14 @@ public class GenerateAll {
 	}
 
 	/**
-	 * Launches the generation.
+	 * Launches the generation, and copies all files from the resources folder to the generation target directory.
 	 *
 	 * @param monitor
 	 *            This will be used to display progress information to the user.
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 * @throws URISyntaxException
-	 * @generated
+	 * @generatedNOT
 	 */
 	public void doGenerate(IProgressMonitor monitor) throws IOException {
 		if (!targetFolder.getLocation().toFile().exists()) {
@@ -115,6 +115,8 @@ public class GenerateAll {
 		Status logTransformationTime = new Status(Status.INFO,Activator.PLUGIN_ID,"Time to generate C99-Container Code: "+finalTime);
 		// writes log into the .log file within the .metadata folder of the workspace
 		Activator.getDefault().getLog().log(logTransformationTime);
+		
+		// Get the resource folder and copy all contents to the generation target folder.
 		URL resources = FileLocator
 				.toFileURL(Platform.getBundle(org.muml.c.adapter.container.Activator.PLUGIN_ID).getEntry("resources"));
 		File sourceFolder = null;

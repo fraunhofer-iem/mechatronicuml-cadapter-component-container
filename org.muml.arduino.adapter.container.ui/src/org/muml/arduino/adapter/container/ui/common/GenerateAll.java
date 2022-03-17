@@ -10,19 +10,27 @@
  *******************************************************************************/
 package org.muml.arduino.adapter.container.ui.common;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
 import org.eclipse.emf.common.util.BasicMonitor;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.muml.psm.muml_container.DeploymentConfiguration;
+import org.muml.psm.muml_container.ECUConfiguration;
 import org.osgi.framework.Bundle;
 
 
@@ -66,13 +74,13 @@ public class GenerateAll {
 	}
 
 	/**
-	 * Launches the generation.
+	 * Launches the generation, and copies all files from the resources folder to the generation target directory.
 	 *
 	 * @param monitor
 	 *            This will be used to display progress information to the user.
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
-	 * @generated
+	 * @generatedNOT
 	 */
 	public void doGenerate(IProgressMonitor monitor) throws IOException {
 		if (!targetFolder.getLocation().toFile().exists()) {
@@ -93,7 +101,24 @@ public class GenerateAll {
 		gen0.setGenerationID(generationID);
 		gen0.doGenerate(BasicMonitor.toMonitor(monitor));
 			
-		
+		// Get the resource folder and copy all contents to the generation target folder.
+		URL resources = FileLocator
+				.toFileURL(Platform.getBundle(org.muml.arduino.adapter.container.Activator.PLUGIN_ID).getEntry("resources"));
+		File sourceFolder = null;
+		try {
+			sourceFolder = new File(resources.toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		Resource resource = new ResourceSetImpl().getResource(this.modelURI, true);
+		if (!resource.getContents().isEmpty()) {
+			for (ECUConfiguration ecu : ((DeploymentConfiguration) resource.getContents().get(0)).getEcuConfigurations()) {
+				File target = new File(targetFolder.getLocationURI().toString().substring(5) + File.separator
+						+ ecu.getStructuredResourceInstance().getName());
+				FileUtils.copyDirectory(sourceFolder, target);
+			}
+
+		}
 	}
 	
 	/**
