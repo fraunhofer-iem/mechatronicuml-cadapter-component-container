@@ -340,6 +340,21 @@ public class Main extends AbstractAcceleoGenerator {
     @Override
     public void registerPackages(ResourceSet resourceSet) {
         super.registerPackages(resourceSet);
+        if (!isInWorkspace(org.muml.pm.hardware.hwresourceinstance.HwresourceinstancePackage.class)) {
+            resourceSet.getPackageRegistry().put(org.muml.pm.hardware.hwresourceinstance.HwresourceinstancePackage.eINSTANCE.getNsURI(), org.muml.pm.hardware.hwresourceinstance.HwresourceinstancePackage.eINSTANCE);
+        }
+        if (!isInWorkspace(org.muml.core.CorePackage.class)) {
+            resourceSet.getPackageRegistry().put(org.muml.core.CorePackage.eINSTANCE.getNsURI(), org.muml.core.CorePackage.eINSTANCE);
+        }
+        if (!isInWorkspace(org.muml.core.expressions.ExpressionsPackage.class)) {
+            resourceSet.getPackageRegistry().put(org.muml.core.expressions.ExpressionsPackage.eINSTANCE.getNsURI(), org.muml.core.expressions.ExpressionsPackage.eINSTANCE);
+        }
+        if (!isInWorkspace(org.muml.core.expressions.common.CommonExpressionsPackage.class)) {
+            resourceSet.getPackageRegistry().put(org.muml.core.expressions.common.CommonExpressionsPackage.eINSTANCE.getNsURI(), org.muml.core.expressions.common.CommonExpressionsPackage.eINSTANCE);
+        }
+        if (!isInWorkspace(org.muml.core.modelinstance.ModelinstancePackage.class)) {
+            resourceSet.getPackageRegistry().put(org.muml.core.modelinstance.ModelinstancePackage.eINSTANCE.getNsURI(), org.muml.core.modelinstance.ModelinstancePackage.eINSTANCE);
+        }
         
         /*
          * If you want to change the content of this method, do NOT forget to change the "@generated"

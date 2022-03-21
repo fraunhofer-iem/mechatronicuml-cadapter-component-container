@@ -1,0 +1,16 @@
+[comment encoding = UTF-8 /]
+[module ArduinoCommunication('http://www.muml.org/core/1.0.0', 
+	'http://www.muml.org/pim/1.0.0', 
+	'http://www.muml.org/pm/hardware/1.0.0', 
+	'http://www.muml.org/pm/software/1.0.0', 
+	'http://www.muml.org/psm/1.0.0', 
+	'http://www.muml.org/psm/muml_container/0.5.0')]
+
+
+[template public generateBuilderForPortHandles(container : ComponentContainer)]
+	[for (port : Port | container.componentType.ports)]
+		[let currentPortInstanceConfigs : Sequence(PortInstanceConfiguration) = container.componentInstanceConfigurations.portInstanceConfigurations->select(piConfig : PortInstanceConfiguration | piConfig.portInstance.portType = port)]
+			block_expression
+		[/let]
+	[/for]
+[/template]
