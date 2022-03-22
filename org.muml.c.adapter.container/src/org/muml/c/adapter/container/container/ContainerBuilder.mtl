@@ -130,6 +130,9 @@ static const [component.getBuilderStructName()/] INIT_BUILDER = { 0, [for (port 
 	}
 [/template]
 
+[**
+ * Generates Builder functions for DDS and Local Port Handles.
+*/]
 [template public generateBuilderForPortHandle(container:ComponentContainer)]
 	[comment generate builder for every port type if used by a component instance/]
 	[for (port : Port | container.componentType.ports)]

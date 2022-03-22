@@ -1,0 +1,99 @@
+[comment encoding = UTF-8 /]
+[**
+ * This module contains all templates, that are used to generate the Configuration-files
+ * for a given Container.
+ */]
+[module MqttCommunication('http://www.muml.org/pim/connector/1.0.0',
+				'http://www.muml.org/pim/behavior/1.0.0',
+				'http://www.muml.org/core/1.0.0',
+				'http://www.muml.org/pim/actionlanguage/1.0.0',
+				'http://www.muml.org/core/expressions/common/1.0.0',
+				'http://www.muml.org/pim/msgtype/1.0.0',
+				'http://www.muml.org/pim/types/1.0.0',
+				'http://www.muml.org/modelinstance/1.0.0',
+				'http://www.muml.org/pim/component/1.0.0',
+				'http://www.muml.org/pim/instance/1.0.0',
+				'http://www.muml.org/pim/realtimestatechart/1.0.0',
+				'http://www.muml.org/psm/1.0.0',
+				'http://www.muml.org/psm/muml_container/0.5.0',
+				'http://www.opendds.org/modeling/schemas/DCPS/1.0',
+				'http://www.opendds.org/modeling/schemas/Core/1.0',
+				'http://www.opendds.org/modeling/schemas/Application/1.0',
+				'http://www.opendds.org/modeling/schemas/Topics/1.0')/]
+
+[import org::muml::c::adapter::container::queries::containerStringQueries /]
+
+[query private getMethodNameForMqttPortHandleBuilder(port : Port) : String = 
+	'create_' + port.name.toUpper() + 'MqttHandle'
+/]
+
+[**
+ * Generate the Builder function for an MQTT Port Handle that is applicable to all PortInstanceConfigurations of the given port.
+ * 
+ * Currently, we only support discrete ports.
+*/]
+[template public generateBuilderForMqttPortHandle(port : Port, portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))
+? (port.oclIsKindOf(DiscretePort))]
+static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.component.getBuilderStructName() /]* b, PortHandle *ptr){
+	ptr->type = PORT_HANDLE_TYPE_MQTT;
+	// TODO: Implement the Port Handle Builder
+
+	return ptr;
+}
+[/template]
+
+[**
+ * Declares the variables that are required for sending messages using MQTT.
+*/]
+[template public generateDeclarationsForMqttSending()]
+//placeholder
+[/template]
+
+[**
+ * Declares the variables that are required for receiving messages using MQTT.
+*/]
+[template public generateDeclarationsForMqttReceiving()]
+//placeholder
+[/template]
+
+[**
+ * Generates the sending of a DiscretePort's message via MQTT.
+*/]
+[template public generateSwitchCaseForMqttSending(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), messageType : MessageType)]
+//placeholder
+[/template]
+
+[**
+ * Generates the sending of a DirectedTypedPort's data via MQTT.
+*/]
+[template public generateSwitchCaseForMqttSending(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))]
+//placeholder
+[/template]
+
+[**
+ * Generates the check if an MQTT message is available for the corresponding DiscretePort.
+*/]
+[template public generateSwitchCaseForMqttExists(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), messageType: MessageType)]
+//placeholder
+[/template]
+
+[**
+ * Generates the check if new data of the corresponding DirectedTypedPort is available via MQTT.
+*/]
+[template public generateSwitchCaseForMqttExists(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT)]
+//placeholder 
+[/template]
+
+[**
+ * Generates the receiving of a DiscretePort's message using MQTT.
+*/]
+[template public generateSwitchCaseForMqttReceiving(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), messageType : MessageType)]
+//placeholder
+[/template]
+
+[**
+ * Generates the receiving of a DirectedTypedPort's data using MQTT.
+*/]
+[template public generateSwitchCaseForMqttReceiving(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))]
+//placeholder
+[/template]

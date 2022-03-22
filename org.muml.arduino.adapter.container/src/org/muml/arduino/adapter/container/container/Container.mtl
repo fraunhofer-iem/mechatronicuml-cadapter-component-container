@@ -27,9 +27,10 @@
 [import org::muml::c::adapter::componenttype::queries::ContainerQueries/]
 
 [import org::muml::c::adapter::container::queries::containerStringQueries/]
-[import org::muml::c::adapter::container::container::ContainerCommunication/]
 [import org::muml::c::adapter::container::container::ContainerBuilder/]
 [import org::muml::c::adapter::container::container::ContainerComponentInstanceConfiguration/]
+
+[import org::muml::arduino::adapter::container::communication::ArduinoCommunication /]
 
 [**
  * Generate the implementation of a container including the APImapping stubs 
@@ -43,12 +44,12 @@
 		[generateBuilderStruct(container.componentType)/]
 		[generateComponetInstancePool(container)/]
 
-		[comment generate port does Message exists, send receive Message used by the component/]
-		[generateCommunicationMethods(container)/]
+		[comment generate the method to check if a message exists, send receive messages used by the component/]
+		[generateCommunicationMethods(container)/] 
 		
 		[generateComponentBuilder(container.componentType)/]
 
-		[generateBuilderForPortHandle(container)/]
+		[generateBuilderForPortHandles(container) /]
 
 		[generateCreateMethodForComponentInstances(container, container.componentInstanceConfigurations)/]
 		

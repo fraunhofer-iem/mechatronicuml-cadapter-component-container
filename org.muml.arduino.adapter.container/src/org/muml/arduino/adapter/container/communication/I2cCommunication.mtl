@@ -1,0 +1,99 @@
+[comment encoding = UTF-8 /]
+[**
+ * This module contains all templates, that are used to generate the Configuration-files
+ * for a given Container.
+ */]
+[module I2cCommunication('http://www.muml.org/pim/connector/1.0.0',
+				'http://www.muml.org/pim/behavior/1.0.0',
+				'http://www.muml.org/core/1.0.0',
+				'http://www.muml.org/pim/actionlanguage/1.0.0',
+				'http://www.muml.org/core/expressions/common/1.0.0',
+				'http://www.muml.org/pim/msgtype/1.0.0',
+				'http://www.muml.org/pim/types/1.0.0',
+				'http://www.muml.org/modelinstance/1.0.0',
+				'http://www.muml.org/pim/component/1.0.0',
+				'http://www.muml.org/pim/instance/1.0.0',
+				'http://www.muml.org/pim/realtimestatechart/1.0.0',
+				'http://www.muml.org/psm/1.0.0',
+				'http://www.muml.org/psm/muml_container/0.5.0',
+				'http://www.opendds.org/modeling/schemas/DCPS/1.0',
+				'http://www.opendds.org/modeling/schemas/Core/1.0',
+				'http://www.opendds.org/modeling/schemas/Application/1.0',
+				'http://www.opendds.org/modeling/schemas/Topics/1.0')/]
+
+[import org::muml::c::adapter::container::queries::containerStringQueries /]
+
+[query private getMethodNameForI2cPortHandleBuilder(port : Port) : String = 
+	'create_' + port.name.toUpper() + 'I2cHandle'
+/]
+
+[**
+ * Generate the Builder function for an I2C Port Handle that is applicable to all PortInstanceConfigurations of the given port.
+ * 
+ * Currently, we only support discrete ports.
+*/]
+[template public generateBuilderForI2cPortHandle(port : Port, portInstanceConfigs : Collection(PortInstanceConfiguration_I2C))
+? (port.oclIsKindOf(DiscretePort))]
+static PortHandle* [getMethodNameForI2cPortHandleBuilder(port)/]([port.component.getBuilderStructName() /]* b, PortHandle *ptr){
+	ptr->type = PORT_HANDLE_TYPE_I2C;
+	// TODO: Implement the Port Handle Builder
+
+	return ptr;
+}
+[/template]
+
+[**
+ * Declares the variables that are required for sending messages using I2C.
+*/]
+[template public generateDeclarationsForI2cSending()]
+//placeholder
+[/template]
+
+[**
+ * Declares the variables that are required for receiving messages using I2C.
+*/]
+[template public generateDeclarationsForI2cReceiving()]
+//placeholder
+[/template]
+
+[**
+ * Generates the sending of a DiscretePort's message via I2C.
+*/]
+[template public generateSwitchCaseForI2cSending(portInstanceConfigs : Collection(PortInstanceConfiguration_I2C), messageType : MessageType)]
+//placeholder
+[/template]
+
+[**
+ * Generates the sending of a DirectedTypedPort's data via I2C.
+*/]
+[template public generateSwitchCaseForI2cSending(portInstanceConfigs : Collection(PortInstanceConfiguration_I2C))]
+//placeholder
+[/template]
+
+[**
+ * Generates the check if an I2C message is available for the corresponding DiscretePort.
+*/]
+[template public generateSwitchCaseForI2cExists(portInstanceConfigs : Collection(PortInstanceConfiguration_I2C), messageType: MessageType)]
+//placeholder
+[/template]
+
+[**
+ * Generates the check if new data of the corresponding DirectedTypedPort is available via I2C.
+*/]
+[template public generateSwitchCaseForI2cExists(portInstanceConfigs : Collection(PortInstanceConfiguration_I2C)]
+//placeholder
+[/template]
+
+[**
+ * Generates the receiving of a DiscretePort's message using I2C.
+*/]
+[template public generateSwitchCaseForI2cReceiving(portInstanceConfigs : Collection(PortInstanceConfiguration_I2C), messageType : MessageType)]
+//placeholder
+[/template]
+
+[**
+ * Generates the receiving of a DirectedTypedPort's data using I2C.
+*/]
+[template public generateSwitchCaseForI2cReceiving(portInstanceConfigs : Collection(PortInstanceConfiguration_I2C))]
+//placeholder
+[/template]
