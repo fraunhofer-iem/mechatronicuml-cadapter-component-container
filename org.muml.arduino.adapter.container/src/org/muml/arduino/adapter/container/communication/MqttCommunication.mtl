@@ -29,11 +29,8 @@
 
 [**
  * Generate the Builder function for an MQTT Port Handle that is applicable to all PortInstanceConfigurations of the given port.
- * 
- * Currently, we only support discrete ports.
 */]
-[template public generateBuilderForMqttPortHandle(port : Port, portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))
-? (port.oclIsKindOf(DiscretePort))]
+[template public generateBuilderForMqttPortHandle(port : Port, portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))]
 static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.component.getBuilderStructName() /]* b, PortHandle *ptr){
 	ptr->type = PORT_HANDLE_TYPE_MQTT;
 	// TODO: Implement the Port Handle Builder
@@ -80,7 +77,7 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
 [**
  * Generates the check if new data of the corresponding DirectedTypedPort is available via MQTT.
 */]
-[template public generateSwitchCaseForMqttExists(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT)]
+[template public generateSwitchCaseForMqttExists(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))]
 //placeholder 
 [/template]
 

@@ -29,11 +29,8 @@
 
 [**
  * Generate the Builder function for an I2C Port Handle that is applicable to all PortInstanceConfigurations of the given port.
- * 
- * Currently, we only support discrete ports.
 */]
-[template public generateBuilderForI2cPortHandle(port : Port, portInstanceConfigs : Collection(PortInstanceConfiguration_I2C))
-? (port.oclIsKindOf(DiscretePort))]
+[template public generateBuilderForI2cPortHandle(port : Port, portInstanceConfigs : Collection(PortInstanceConfiguration_I2C))]
 static PortHandle* [getMethodNameForI2cPortHandleBuilder(port)/]([port.component.getBuilderStructName() /]* b, PortHandle *ptr){
 	ptr->type = PORT_HANDLE_TYPE_I2C;
 	// TODO: Implement the Port Handle Builder
@@ -80,7 +77,7 @@ static PortHandle* [getMethodNameForI2cPortHandleBuilder(port)/]([port.component
 [**
  * Generates the check if new data of the corresponding DirectedTypedPort is available via I2C.
 */]
-[template public generateSwitchCaseForI2cExists(portInstanceConfigs : Collection(PortInstanceConfiguration_I2C)]
+[template public generateSwitchCaseForI2cExists(portInstanceConfigs : Collection(PortInstanceConfiguration_I2C))]
 //placeholder
 [/template]
 
