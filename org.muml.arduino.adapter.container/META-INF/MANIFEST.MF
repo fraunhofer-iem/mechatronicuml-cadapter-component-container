@@ -18,9 +18,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.engine;bundle-version="3.3.0",
  com.google.guava,
  org.muml.psm.container;bundle-version="1.0.0",
- de.upb.swt.core;bundle-version="1.0.0",
  org.muml.c.adapter.container;bundle-version="1.0.0",
- org.muml.c.adapter.componenttype;bundle-version="1.0.0"
+ org.muml.c.adapter.componenttype;bundle-version="1.0.0",
+ de.upb.swt.core;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true

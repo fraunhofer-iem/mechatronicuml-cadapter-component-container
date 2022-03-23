@@ -33,7 +33,6 @@
         <pathelement location="${ECLIPSE_HOME}/plugins/com.google.guava_15.0.0.v201403281430.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.muml.pim.actionlanguage_1.0.0.201612230944.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.opendds.modeling.model_3.3.0.201209281318.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.muml.pm.software_1.0.0.201612230948.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/de.upb.swt.core_1.0.0.201612230936.jar"/>
     </path>
 
