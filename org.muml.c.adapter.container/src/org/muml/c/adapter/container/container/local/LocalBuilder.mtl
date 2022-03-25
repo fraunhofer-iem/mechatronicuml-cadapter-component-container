@@ -47,40 +47,40 @@
 *@details Creates a struct LocalHandle which encapsualtes the logic for communication
 *
 */
-	static PortHandle* [port.getMethodNameForLocalPortBuilder()/]([port.component.getBuilderStructName()/]* b, PortHandle *ptr){
-		ptr->type = PORT_HANDLE_TYPE_LOCAL;
-		LocalHandle* hndl = malloc(sizeof(LocalHandle)+[port.receiverMessageTypes->size()/]*sizeof(LocalSubscriber));
-		ptr->concreteHandle = hndl;
-		hndl->pubID = b->[port.name.toUpper()/]_op.local_option.pubID;
-		hndl->subID = b->[port.name.toUpper()/]_op.local_option.subID;
-		hndl->numOfSubs = [port.receiverMessageTypes->size()/];
-		//subscribe to every receiver message type of Port [port.name/]
-		[comment in the MUML model is exactly one message per buffer/]
-			[for (buffer : MessageBuffer | port.receiverMessageBuffer)]
-			[let j : Integer = i-1]			
-				[for (msg : MessageType | buffer.messageType)]
-		 subscribeToMessage(&(hndl->localSubscribers['['/][j/][']'/]), hndl->subID, [msg.getIdentifierVariableName()/],[buffer.bufferSize.value/] ,
-					sizeof([msg.getMessageType()/]),
-					[if buffer.bufferOverflowAvoidanceStrategy=BufferOverflowAvoidanceStrategy::DISCARD_OLDEST_MESSAGE_IN_BUFFER] true [else] false	[/if]);
-				[/for]
-			[/let]
-			[/for]	
-		return ptr;
-	}
+static PortHandle* [port.getMethodNameForLocalPortBuilder()/]([port.component.getBuilderStructName()/]* b, PortHandle *ptr){
+	ptr->type = PORT_HANDLE_TYPE_LOCAL;
+	LocalHandle* hndl = malloc(sizeof(LocalHandle)+[port.receiverMessageTypes->size()/]*sizeof(LocalSubscriber));
+	ptr->concreteHandle = hndl;
+	hndl->pubID = b->[port.name.toUpper()/]_op.local_option.pubID;
+	hndl->subID = b->[port.name.toUpper()/]_op.local_option.subID;
+	hndl->numOfSubs = [port.receiverMessageTypes->size()/];
+	//subscribe to every receiver message type of Port [port.name/]
+	[comment in the MUML model is exactly one message per buffer/]
+		[for (buffer : MessageBuffer | port.receiverMessageBuffer)]
+		[let j : Integer = i-1]			
+			[for (msg : MessageType | buffer.messageType)]
+	subscribeToMessage(&(hndl->localSubscribers['['/][j/][']'/]), hndl->subID, [msg.getIdentifierVariableName()/],[buffer.bufferSize.value/] ,
+				sizeof([msg.getMessageType()/]),
+				[if buffer.bufferOverflowAvoidanceStrategy=BufferOverflowAvoidanceStrategy::DISCARD_OLDEST_MESSAGE_IN_BUFFER] true [else] false	[/if]);
+			[/for]
+		[/let]
+		[/for]	
+	return ptr;
+}
 [/template]
 
 [template public generateBuilderForPortHandleLocal(port : DirectedTypedPort, portInstanceCfg : Collection(PortInstanceConfiguration_Local))]
-	static PortHandle* [port.getMethodNameForLocalPortBuilder()/]([port.component.getBuilderStructName()/]* b, PortHandle *ptr){
-		ptr->type = PORT_HANDLE_TYPE_LOCAL;
-		LocalHandle* hndl = malloc(sizeof(LocalHandle)+[if (port.inPort)]1[else]0[/if]*sizeof(LocalSubscriber));
-		ptr->concreteHandle = hndl;
-		hndl->pubID = b->[port.name.toUpper()/]_op.local_option.pubID;
-		hndl->subID = b->[port.name.toUpper()/]_op.local_option.subID;
-		[if (port.inPort)]
-		//create space for Subscriber
-		hndl->numOfSubs = 1;
-		subscribeToMessage(&(hndl->localSubscribers['['/]0[']'/] ),hndl->subID, 0, 1, sizeof([port.dataType.getTypeName()/]), true);
-		[/if]
-		return ptr;
-	}
+static PortHandle* [port.getMethodNameForLocalPortBuilder()/]([port.component.getBuilderStructName()/]* b, PortHandle *ptr){
+	ptr->type = PORT_HANDLE_TYPE_LOCAL;
+	LocalHandle* hndl = malloc(sizeof(LocalHandle)+[if (port.inPort)]1[else]0[/if]*sizeof(LocalSubscriber));
+	ptr->concreteHandle = hndl;
+	hndl->pubID = b->[port.name.toUpper()/]_op.local_option.pubID;
+	hndl->subID = b->[port.name.toUpper()/]_op.local_option.subID;
+	[if (port.inPort)]
+	//create space for Subscriber
+	hndl->numOfSubs = 1;
+	subscribeToMessage(&(hndl->localSubscribers['['/]0[']'/] ),hndl->subID, 0, 1, sizeof([port.dataType.getTypeName()/]), true);
+	[/if]
+	return ptr;
+}
 [/template]

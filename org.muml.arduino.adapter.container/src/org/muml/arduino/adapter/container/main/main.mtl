@@ -21,11 +21,6 @@
 The given Deployment Configuration must not make use of DDS for the Arduino Code generation!
 Currently, only MQTT and I2C are supported.
 	[/file]
-[elseif (deploymentConfig.ecuConfigurations.componentContainers.componentInstanceConfigurations.portInstanceConfigurations->exists(piConifg | piConifg.oclIsKindOf(PortInstanceConfiguration_Local)))]
-	[file ('info.txt', false, 'UTF-8')]
-The given Deployment Configuration must not make use of local Ports for the Arduino Code generation!
-Currently, only MQTT and I2C are supported.
-	[/file]
 [else] [comment Else, only MQTT and I2C are used -> start the actual code generation /]
 [for (ecuConfig : ECUConfiguration | deploymentConfig.ecuConfigurations)]
 	[ecuConfig.createArduinoContainers() /]

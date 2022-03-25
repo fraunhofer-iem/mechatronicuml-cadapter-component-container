@@ -14,7 +14,7 @@ extern "C" {
 
 
 typedef enum {
-	PORT_HANDLE_TYPE_MQTT, PORT_HANDLE_TYPE_I2C
+	PORT_HANDLE_TYPE_MQTT, PORT_HANDLE_TYPE_I2C, PORT_HANDLE_TYPE_LOCAL
 } HandleType;
 
 typedef struct PortHandle {
