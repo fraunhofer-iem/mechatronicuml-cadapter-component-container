@@ -15,11 +15,7 @@
 				'http://www.muml.org/pim/instance/1.0.0',
 				'http://www.muml.org/pim/realtimestatechart/1.0.0',
 				'http://www.muml.org/psm/1.0.0',
-				'http://www.muml.org/psm/muml_container/0.5.0',
-				'http://www.opendds.org/modeling/schemas/DCPS/1.0',
-				'http://www.opendds.org/modeling/schemas/Core/1.0',
-				'http://www.opendds.org/modeling/schemas/Application/1.0',
-				'http://www.opendds.org/modeling/schemas/Topics/1.0')/]
+				'http://www.muml.org/psm/muml_container/0.5.0')/]
 
 
 [import org::muml::c::adapter::componenttype::queries::stringQueries]
@@ -38,19 +34,23 @@
 */]
 [template public generateContainer(container:ComponentContainer, useSubDir:Boolean, path: String)]
 	[comment generate the container implementation file /]
-	[file (path+getFileNameCpp(container, false, true), false, 'UTF-8')]
+	[file (path+getFileNameCpp(container, false, true), false, 'UTF-8')] [comment Cpp for Arduino /]
 		[includes(container)/]
 		
+		[comment Reuse the C Adapter ContainerBuilder here/]
 		[generateBuilderStruct(container.componentType)/]
 		[generateComponetInstancePool(container)/]
 
-		[comment generate the method to check if a message exists, send receive messages used by the component/]
+		[comment generate the Arduino-specific methods to check if a message exists, send receive messages used by the component/]
 		[generateCommunicationMethods(container)/] 
 		
+		[comment Reuse the C Adapter ContainerBuilder here/]
 		[generateComponentBuilder(container.componentType)/]
-
+		
+		[comment generate the Arduino-specific Port Handles /]
 		[generateBuilderForPortHandles(container) /]
-
+		
+		[comment Reuse the C Adapter ContainerComponentInstanceConfiguration here/]
 		[generateCreateMethodForComponentInstances(container, container.componentInstanceConfigurations)/]
 		
 	[/file]
