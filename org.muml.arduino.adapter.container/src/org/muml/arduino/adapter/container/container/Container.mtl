@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [**
  * This module contains all templates, that are used to generate the Configuration-files
- * for a given Container.
+ * for a given Container. Inspired by org.muml.c.adapter.container.container with necessary adaptions.
  */]
 [module Container('http://www.muml.org/pim/connector/1.0.0',
 				'http://www.muml.org/pim/behavior/1.0.0',
@@ -24,9 +24,9 @@
 
 [import org::muml::c::adapter::container::queries::containerStringQueries/]
 [import org::muml::c::adapter::container::container::ContainerBuilder/]
-[import org::muml::c::adapter::container::container::ContainerComponentInstanceConfiguration/]
 
 [import org::muml::arduino::adapter::container::communication::ArduinoCommunication /]
+[import org::muml::arduino::adapter::container::container::ContainerComponentInstanceConfiguration /]
 
 [**
  * Generate the implementation of a container including the APImapping stubs 

@@ -19,7 +19,7 @@
 
 [import org::muml::c::adapter::container::queries::containerStringQueries /]
 
-[query private getMethodNameForMqttPortHandleBuilder(port : Port) : String = 
+[query public getMethodNameForMqttPortHandleBuilder(port : Port) : String = 
 	'create_' + port.name.toUpper() + 'MqttHandle'
 /]
 

@@ -20,7 +20,7 @@
 [import org::muml::c::adapter::container::queries::containerStringQueries /]
 [import org::muml::c::adapter::componenttype::queries::stringQueries /]
 
-[query private getMethodNameForI2cPortHandleBuilder(port : Port) : String = 
+[query public getMethodNameForI2cPortHandleBuilder(port : Port) : String = 
 	'create_' + port.name.toUpper() + 'I2cHandle'
 /]
 

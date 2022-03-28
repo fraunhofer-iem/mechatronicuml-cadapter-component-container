@@ -162,7 +162,7 @@ bool_t [port.getContainerReceiverMethodName()/](Port* port, [port.dataType.getTy
 		[generateDeclarationsForMqttReceiving() /]
 	[/if]
 	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-		[generateDeclarationsForI2cReceving() /]
+		[generateDeclarationsForI2cReceiving() /]
 	[/if]
 	switch(port->handle->type) {
 		[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]

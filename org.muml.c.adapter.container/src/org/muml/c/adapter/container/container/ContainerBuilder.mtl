@@ -31,8 +31,8 @@
 [template public generateBuilderStruct(component:Component)]
 /**
 *  
-* @brief The options a port declases
-* @details Thes options are used in the struct [component.getBuilderStructName()/]
+* @brief The options a port declares
+* @details These options are used in the struct [component.getBuilderStructName()/]
 */ 
 struct port_option {
 	union {
@@ -45,8 +45,8 @@ struct port_option {
 			int partition;
 		} dds_option;
 		struct {
-			uint16_T ownAddress;
-			uint16_T otherAddress;
+			uint8_T ownAddress;
+			uint8_T otherAddress;
 		} i2c_option;
 		struct {
 			char serverAddress['['/]15[']'/];

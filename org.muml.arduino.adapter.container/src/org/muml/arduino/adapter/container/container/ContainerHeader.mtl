@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [**
  * This module contains all templates, that are used to generate the Header-file
- * for a given Container.
+ * for a given Container. Duplicated from org.muml.c.adapter.container.container due to necessary adaptions.
  */]
 [module ContainerHeader('http://www.muml.org/pim/connector/1.0.0',
 				'http://www.muml.org/pim/behavior/1.0.0',
