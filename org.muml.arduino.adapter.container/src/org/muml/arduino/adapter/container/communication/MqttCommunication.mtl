@@ -30,7 +30,7 @@
 static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.component.getBuilderStructName() /]* b, PortHandle *ptr){
 	ptr->type = PORT_HANDLE_TYPE_MQTT;
 	// TODO: Implement the Port Handle Builder
-
+	
 	return ptr;
 }
 [/template]
@@ -39,14 +39,15 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
  * Declares the variables that are required for sending messages using MQTT.
 */]
 [template public generateDeclarationsForMqttSending()]
-//placeholder
+	MqttHandle* mqttHandle;
 [/template]
 
 [**
  * Declares the variables that are required for receiving messages using MQTT.
 */]
 [template public generateDeclarationsForMqttReceiving()]
-//placeholder
+	MqttHandle* mqttHandle;
+	int i;
 [/template]
 
 [**

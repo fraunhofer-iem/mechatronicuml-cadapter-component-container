@@ -40,7 +40,7 @@
 		[/if]
 [/template]
 
-[template public generateBuilderForPortHandleLocal(port : DiscretePort, portInstanceCfg : Collection(PortInstanceConfiguration_Local))]
+[template private generateBuilderForPortHandleLocal(port : DiscretePort, portInstanceCfg : Collection(PortInstanceConfiguration_Local))]
 /**
 *
 *@brief The Builder for a LocalHandle for Discrete port [port.name/]
@@ -69,7 +69,7 @@ static PortHandle* [port.getMethodNameForLocalPortBuilder()/]([port.component.ge
 }
 [/template]
 
-[template public generateBuilderForPortHandleLocal(port : DirectedTypedPort, portInstanceCfg : Collection(PortInstanceConfiguration_Local))]
+[template private generateBuilderForPortHandleLocal(port : DirectedTypedPort, portInstanceCfg : Collection(PortInstanceConfiguration_Local))]
 static PortHandle* [port.getMethodNameForLocalPortBuilder()/]([port.component.getBuilderStructName()/]* b, PortHandle *ptr){
 	ptr->type = PORT_HANDLE_TYPE_LOCAL;
 	LocalHandle* hndl = malloc(sizeof(LocalHandle)+[if (port.inPort)]1[else]0[/if]*sizeof(LocalSubscriber));
