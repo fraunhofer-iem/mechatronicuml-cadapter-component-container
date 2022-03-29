@@ -24,6 +24,7 @@
 [import org::muml::c::adapter::container::queries::containerStringQueries/]
 [import org::muml::c::adapter::container::container::ContainerBuilder/]
 [import org::muml::c::adapter::container::container::Container/]
+
 [template public generateMainFile(ecuConfig: ECUConfiguration, path : String, useSubDir : Boolean)]
 [comment Arduino sketches' main-files have to be called just as their parent directory - so don't call them main.ino! /]
 [file (path+ecuConfig.structuredResourceInstance.name+'.ino', false, 'UTF-8')]
@@ -78,21 +79,20 @@ int setup(){
 		[let mqttPiConfig : PortInstanceConfiguration_MQTT = ecuConfig.componentContainers.componentInstanceConfigurations.portInstanceConfigurations->any(piConfig | piConfig.oclIsKindOf(PortInstanceConfiguration_MQTT)).oclAsType(PortInstanceConfiguration_MQTT)]
 	//collect the data required for the WiFi configuration
 	wifiConfig = malloc(sizeof(struct WiFiConfig));
-	wifiConfig->ssid = ""; // TODO
-	wifiConfig->pass = ""; // TODO
+	wifiConfig->ssid = "[mqttPiConfig.WiFi_ssid.toString()/]";
+	wifiConfig->pass = "[mqttPiConfig.WiFi_pass.toString()/]";
 	wifiConfig->status = WL_IDLE_STATUS;
-	
+
 	//collect the data required for the MQTT configuration
 	mqttConfig = malloc(sizeof(struct MqttConfig));
-	mqttConfig->serverIPAddress = ""; // TODO
-	mqttConfig->serverPort = 1234; // TODO
+	mqttConfig->serverIPAddress = "[mqttPiConfig.MQTT_serverAddress.toString()/]";
+	mqttConfig->serverPort = [mqttPiConfig.MQTT_serverPort/];
 	mqttConfig->clientName = "[ecuConfig.name.toString() /]";
 
 	MqttCommunication_setup(wifiConfig, mqttConfig);
-			[/let]
-		[/let]
+		[/let]	
 	[/if]
-	
+
 	#ifdef DEBUG
 	Serial.begin(9600);
 	Serial.println("Initialization done...start execution.\n");

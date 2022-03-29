@@ -64,7 +64,8 @@
 				[if (portCfg.oclIsKindOf(PortInstanceConfiguration_MQTT))]
 					b.[portCfg.portInstance.portType.name.toUpper()/] = PORT_ACTIVE;
 					b.create[portCfg.portInstance.portType.name.toUpper()/]Handle = &[portCfg.portInstance.portType.getMethodNameForMqttPortHandleBuilder()/];
-					// TODO: Configuration for MQTT Port Handles via port option
+					b.[portCfg.portInstance.portType.name.toUpper() /]_op.mqtt_option.publishingTopic = "[portCfg.oclAsType(PortInstanceConfiguration_MQTT).publishingTopic.toString() /]";
+					b.[portCfg.portInstance.portType.name.toUpper() /]_op.mqtt_option.subscriptionTopic = "[portCfg.oclAsType(PortInstanceConfiguration_MQTT).subscriptionTopic.toString() /]";
 				[/if]
 				[if (portCfg.oclIsKindOf(PortInstanceConfiguration_I2C))]
 					b.[portCfg.portInstance.portType.name.toUpper()/] = PORT_ACTIVE;
