@@ -6,8 +6,8 @@
 	'http://www.muml.org/psm/1.0.0', 
 	'http://www.muml.org/psm/muml_container/0.5.0')]
 
-[comment import org::muml::arduino::adapter::container::communication::MqttCommunication /]
-[comment import org::muml::arduino::adapter::container::communication::I2cCommunication /]
+[import org::muml::arduino::adapter::container::communication::MqttCommunication /]
+[import org::muml::arduino::adapter::container::communication::I2cCommunication /]
 [import org::muml::c::adapter::container::container::local::LocalBuilder /]
 [import org::muml::c::adapter::container::container::local::LocalCommunication /]
 
@@ -24,13 +24,13 @@
 		[if (currentPortInstanceConfigs->size()>0)]
 			[comment Then the port is used by at least one component instance -- ports might be optional /]
 			[if (currentPortInstanceConfigs->exists(p|p.oclIsKindOf(PortInstanceConfiguration_Local)))]
-				[generateBuilderForPortHandleLocal(port, currentPortInstanceConfigs)/]
+[port.generateBuilderForPortHandleLocal(currentPortInstanceConfigs.oclAsType(PortInstanceConfiguration_Local)) /]
 			[/if]
 			[if (currentPortInstanceConfigs->exists(p|p.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
-				[comment generateBuilderForMqttPortHandle(port, currentPortInstanceConfigs) /] 
+[port.generateBuilderForMqttPortHandle(currentPortInstanceConfigs.oclAsType(PortInstanceConfiguration_MQTT)) /]
 			[/if]
 			[if (currentPortInstanceConfigs->exists(p|p.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-				[comment generateBuilderForI2cPortHandle(port, currentPortInstanceConfigs) /]
+[port.generateBuilderForI2cPortHandle(currentPortInstanceConfigs.oclAsType(PortInstanceConfiguration_I2C)) /]
 			[/if]
 		[/if]
 	[/let]
@@ -82,25 +82,25 @@
 *
 */
 bool_t [port.getContainerCheckForMessageMethodName()/](Port* port){
-	[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-		[generateDeclarationsForReceiving_Local()/]
-	[/if]
-	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
-		[comment generateDeclarationsForMqttReceiving() /]
-	[/if]
-	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-		[comment generateDeclarationsForI2cReceiving() /]
-	[/if]
+[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
+	[generateDeclarationsForReceiving_Local()/]
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
+	[generateDeclarationsForMqttReceiving() /]
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
+	[generateDeclarationsForI2cReceiving() /]
+[/if]
 	switch(port->handle->type) {
-		[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-			[generateSwitchCaseForMessageExists_Local(port)/]
-		[/if]
-		[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
-			//placeholder for mqtt exists
-		[/if]
-		[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-			[comment portInstanceConfigurations.oclAsType(PortInstanceConfiguration_I2C).generateSwitchCaseForI2cExists() /]
-		[/if]
+[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
+	[port.generateSwitchCaseForMessageExists_Local()/]
+[/if]
+[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
+	//placeholder for mqtt exists
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
+	[generateSwitchCaseForI2cExists(portInstanceConfigurations.oclAsType(PortInstanceConfiguration_I2C)) /]
+[/if]
 	default:
 		break;	
 	}
@@ -119,25 +119,28 @@ bool_t [port.getContainerCheckForMessageMethodName()/](Port* port){
 *
 */	
 bool_t [port.getContainerCheckForMessageMethodName(messageType)/](Port* port){
+[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
+	[generateDeclarationsForReceiving_Local()/]
+[/if]
+[if (portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
+	[comment generateDeclarationsForMqttReceiving() /]
+	//mqtt declaraions
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
+	[comment generateDeclarationsForI2cReceving() /]
+	// i2c declarations 
+[/if]
+	switch(port->handle->type) {
 	[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-		[generateDeclarationsForReceiving_Local()/]
+		[generateSwitchCaseForMessageExists_Local(messageType)/]
 	[/if]
-	[if (portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
-		[comment generateDeclarationsForMqttReceiving() /]
+	[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
+		[comment generateSwitchCaseForMqttExists(portInstanceConfigurations, messageType) /]
+		// mqtt exists
 	[/if]
 	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-		[commment generateDeclarationsForI2cReceving() /]
-	[/if]
-	switch(port->handle->type) {
-		[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-			[generateSwitchCaseForMessageExists_Local(messageType)/]
-		[/if]
-		[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
-			[comment generateSwitchCaseForMqttExists(portInstanceConfigurations, messageType) /]
-		[/if]
-		[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-			[comment generateSwitchCaseForI2cExists(portInstanceConfigurations, messageType) /]
-		[/if]	
+		[generateSwitchCaseForI2cExists(portInstanceConfigurations.oclAsType(PortInstanceConfiguration_I2C), messageType) /]
+	[/if]	
 	default:
 		break;	
 	}
@@ -155,27 +158,29 @@ bool_t [port.getContainerCheckForMessageMethodName(messageType)/](Port* port){
 *
 */	
 bool_t [port.getContainerReceiverMethodName()/](Port* port, [port.dataType.getTypeName()/]* msg){
+[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
+	[generateDeclarationsForReceiving_Local()/]
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
+	[comment generateDeclarationsForMqttReceiving() /]
+	// mqtt declarations
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
+	[comment generateDeclarationsForI2cReceiving() /]
+	// i2c declarations
+[/if]
+	switch(port->handle->type) {
 	[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-		[generateDeclarationsForReceiving_Local()/]
+		[port.generateSwitchCaseForSending_Local() /]
 	[/if]
-	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
-		[comment generateDeclarationsForMqttReceiving() /]
+	[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
+		//placeholder for mqtt receive
 	[/if]
 	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-		[comment generateDeclarationsForI2cReceiving() /]
+		[generateSwitchCaseForI2cExists(portInstanceConfigurations.oclAsType(PortInstanceConfiguration_I2C)) /]
 	[/if]
-	switch(port->handle->type) {
-		[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-			[port.generateSwitchCaseForSending_Local() /]
-		[/if]
-		[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
-			//placeholder for mqtt exists
-		[/if]
-		[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-			// placeholder for i2c exists 
-		[/if]	
 	default:
-		break;	
+		break;
 	}
 	return false;
 }	
@@ -192,26 +197,26 @@ bool_t [port.getContainerReceiverMethodName()/](Port* port, [port.dataType.getTy
 *
 */
 bool_t [port.getContainerReceiverMethodName(messageType)/](Port* port, [messageType.getMessageType()/]* msg){
-	[comment generated required data structures/]
+[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
+	[generateDeclarationsForReceiving_Local()/]
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
+	[comment generateDeclarationsForMqttReceiving() /]
+	// mqtt declarations
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
+	[generateDeclarationsForI2cReceiving() /]
+[/if]
+	switch(port->handle->type) {
 	[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-		[generateDeclarationsForReceiving_Local()/]
+		[generateSwitchCaseForReceiving_Local(messageType)/]
 	[/if]
-	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
-		[comment generateDeclarationsForMqttReceiving() /]
+	[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
+		// placeholder for mqqt receive
 	[/if]
 	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-		test
+		[generateSwitchCaseForI2cReceiving(portInstanceConfigurations.oclAsType(PortInstanceConfiguration_I2C), messageType) /]
 	[/if]
-	switch(port->handle->type) {
-		[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-			[generateSwitchCaseForReceiving_Local(messageType)/]
-		[/if]
-		[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
-			test
-		[/if]
-		[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-			test
-		[/if]	
 	default:
 		break;	
 	}
@@ -229,26 +234,26 @@ bool_t [port.getContainerReceiverMethodName(messageType)/](Port* port, [messageT
 *
 */	
 void [port.getContainerSendMethodName()/](Port* port, [port.dataType.getTypeName()/]* msg){
-	[comment generated required data structures/]
+[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
+	[generateDeclarationsForSending_Local()/]
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
+	[comment generateDeclarationsForMqttSending() /]
+	// mqtt declarations
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
+	[generateDeclarationsForI2cSending() /]
+[/if]
+	switch(port->handle->type) {
 	[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-		[generateDeclarationsForSending_Local()/]
+		[generateSwitchCaseForSending_Local(port)/]
 	[/if]
-	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
-		[comment generateDeclarationsForMqttSending() /]
+	[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
+		// mqtt sending
 	[/if]
 	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-		[comment generateDeclarationsForI2cSending() /]
+		[generateSwitchCaseForI2cSending(portInstanceConfigurations.oclAsType(PortInstanceConfiguration_I2C)) /]
 	[/if]
-	switch(port->handle->type) {
-		[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-			[generateSwitchCaseForSending_Local(port)/]
-		[/if]
-		[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
-			test
-		[/if]
-		[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-			test
-		[/if]
 	default:
 		break;	
 	}
@@ -266,26 +271,26 @@ void [port.getContainerSendMethodName()/](Port* port, [port.dataType.getTypeName
 *
 */	
 void [port.getContainerSendMethodName(messageType)/](Port* port, [messageType.getMessageType()/]* msg){
-	[comment generated required data structures/]
+[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
+	[generateDeclarationsForSending_Local()/]
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
+	[comment generateDeclarationsForMqttSending() /]
+	// mqtt declarations
+[/if]
+[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
+	[generateDeclarationsForI2cSending() /]
+[/if]
+	switch(port->handle->type) {
 	[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-		[generateDeclarationsForSending_Local()/]
+		[generateSwitchCaseForSending_Local(messageType)/]
 	[/if]
-	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
-		[comment generateDeclarationsForMqttSending() /]
+	[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
+		// mqtt sending
 	[/if]
 	[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-		[comment generateDeclarationsForI2cSending() /]
+		[generateSwitchCaseForI2cSending(portInstanceConfigurations.oclAsType(PortInstanceConfiguration_I2C), messageType) /]
 	[/if]
-	switch(port->handle->type) {
-		[if portInstanceConfigurations->exists(c|c.oclIsKindOf(PortInstanceConfiguration_Local))]
-			[generateSwitchCaseForSending_Local(messageType)/]
-		[/if]
-		[if portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_MQTT))]
-			test
-		[/if]
-		[if (portInstanceConfigurations->exists(pic|pic.oclIsKindOf(PortInstanceConfiguration_I2C)))]
-			test
-		[/if]
 	default:
 		break;	
 	}

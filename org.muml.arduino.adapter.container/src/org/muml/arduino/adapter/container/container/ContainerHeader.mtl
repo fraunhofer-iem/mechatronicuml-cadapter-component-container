@@ -68,21 +68,22 @@
 
 [if isI2cUsed(container)]
 //I2C Specific includes
-//TODO
+//#include "container_lib/I2cCustomLib.h"
+//If I2C is used, it is already included in the main file due to the necessary I2C setup
 [/if]
 [if (isMqttUsed(container))]
 //MQTT specific includes
 //TODO
 [/if]
-//include the component_interfache header
-#include "../[getFileNameComponentInterface(container.componentType,useSubDir)/]"
+//include the component_interface header
+#include "../[getFileNameComponentInterface(container.componentType, useSubDir)/]"
 //include api mapping headers
 [for (cInst : ComponentInstance | container.componentInstances)]
 	[for (cPort : ContinuousPort | container.componentType.ports->filter(ContinuousPort))]
 #include "../APImappings/[cInst.getIdentifierVariableName()/][cPort.getVariableName()/]accessCommand.h"
 	[/for]
 [/for] 
-	[/template]
+[/template]
 
 [template public containerOperations(container:ComponentContainer)]
 /**
