@@ -3,9 +3,6 @@
 
 #define MAX_I2C_MESSAGE_SIZE_IN_USE 512
 
-/**
- * A struct to manage a linked list to keep track of all I2C receivers.
- */
 struct I2cReceiverListElement {
     I2cReceiver* receiver;
     struct I2cReceiverListElement *nextElement;
@@ -27,11 +24,6 @@ static void i2cCommunication_setup(uint8_T ownI2cAddress){
     Wire.onReceive(receiveI2cMessageIntoBuffer);
 }
 
-/**
- * @brief Callback Method to be invoke whenever an I2C message is received.
- *
- * Puts the message into the corresponding message buffer.
- */
 static void receiveI2cMessageIntoBuffer(int numberOfBytesReceived){
     char messageStringBuffer[numberOfBytesReceived +1]; //allocate space to store the message
     memset(messageStringBuffer, 0, numberOfBytesReceived); //fill the string buffer with 0s
@@ -48,14 +40,11 @@ static void receiveI2cMessageIntoBuffer(int numberOfBytesReceived){
         list = &(*list)->nextElement;
     }
     if (bufferToFill != NULL){
-        //TODO: messageStringBuffer hold a JSON string - should be unmarshalled if content matters
+        //TODO: messageStringBuffer holds a JSON string - should be unmarshalled if content matters
         MessageBuffer_enqueue(bufferToFill, messageStringBuffer);
     }
 }
 
-/**
- * @brief Appends a new I2cReceiver object to the given list.
- */
 static void appendI2cReceiverToList(struct I2cReceiverListElement **list, I2cReceiver *newReceiver){
     struct I2cReceiverListElement *newListElement;
     while(*list != NULL){ //navigate to the end of the list
@@ -64,7 +53,7 @@ static void appendI2cReceiverToList(struct I2cReceiverListElement **list, I2cRec
     newListElement = (struct I2cReceiverListElement*) malloc(sizeof(struct I2cReceiverListElement));
     newListElement->receiver = newReceiver;
     newListElement->nextElement = NULL;
-    *list = newListElement;
+    *list = newListElement; //append the new item to the list
 }
 
 static void createAndRegisterI2cReceiver(I2cReceiver* receiver,
@@ -77,9 +66,6 @@ static void createAndRegisterI2cReceiver(I2cReceiver* receiver,
     appendI2cReceiverToList(&i2cReceiverList, receiver);
 }
 
-/**
- * @brief transform a message into a json string.
- */
 static char* marshal(uint16_T messageId, void* message){
     DynamicJsonDocument doc(MAX_I2C_MESSAGE_SIZE_IN_USE);
     doc["msgId"] = messageId;
@@ -90,9 +76,6 @@ static char* marshal(uint16_T messageId, void* message){
     return jsonString;
 }
 
-/**
- * @brief read the messageId from a json string message.
- */
 static uint16_T unmarshalType(char* jsonString){
     DynamicJsonDocument doc(MAX_I2C_MESSAGE_SIZE_IN_USE);
     deserializeJson(doc, jsonString);
