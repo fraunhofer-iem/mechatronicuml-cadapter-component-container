@@ -34,6 +34,14 @@
 #include "container_lib/I2cCustomLib.h"
 [/if]
 
+[comment include the MQTT lib if MQTT is use by the containers on this ECU /]
+[if (ecuConfig.componentContainers.componentInstanceConfigurations.portInstanceConfigurations->exists(piConfig | piConfig.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
+#include "container_lib/MqttCustomLib.h"
+
+static struct WiFiConfig* wifiConfig;
+static struct MqttConfig* mqttConfig;
+[/if]
+
 [for (container : ComponentContainer | ecuConfig.componentContainers)]
 #include "[container.getFileName(container, true, useSubDir)/]"
 [/for]
@@ -64,6 +72,26 @@ int setup(){
 			[/let]
 		[/let]
 	[/if]
+
+	[comment SETUP the MQTT lib if MQTT is used by the containers on this ECU /]
+	[if (ecuConfig.componentContainers.componentInstanceConfigurations.portInstanceConfigurations->exists(piConfig | piConfig.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
+		[let mqttPiConfig : PortInstanceConfiguration_MQTT = ecuConfig.componentContainers.componentInstanceConfigurations.portInstanceConfigurations->any(piConfig | piConfig.oclIsKindOf(PortInstanceConfiguration_MQTT)).oclAsType(PortInstanceConfiguration_MQTT)]
+	//collect the data required for the WiFi configuration
+	wifiConfig = malloc(sizeof(struct WiFiConfig));
+	wifiConfig->ssid = ""; // TODO
+	wifiConfig->pass = ""; // TODO
+	wifiConfig->status = WL_IDLE_STATUS;
+	
+	//collect the data required for the MQTT configuration
+	mqttConfig = malloc(sizeof(struct MqttConfig));
+	mqttConfig->serverIPAddress = ""; // TODO
+	mqttConfig->serverPort = 1234; // TODO
+	mqttConfig->clientName = "[ecuConfig.name.toString() /]";
+
+	MqttCommunication_setup(wifiConfig, mqttConfig);
+			[/let]
+		[/let]
+	[/if]
 	
 	#ifdef DEBUG
 	Serial.begin(9600);
@@ -72,9 +100,14 @@ int setup(){
 }
 
 void loop(){
+	[comment LOOP the MQTT library if any of the ECU's containers uses MQTT /]
+	[if (ecuConfig.componentContainers.componentInstanceConfigurations.portInstanceConfigurations->exists(piConfig | piConfig.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
+	MqttCommunication_loop(mqttConfig);
+	[/if]
+
 	[for (ci : ComponentInstance | cis)]
 		[if (ci.componentType.oclIsKindOf(AtomicComponent))]
-			[ci.componentType.getProcessMethodName()/](atomic_c[i/]);
+	[ci.componentType.getProcessMethodName()/](atomic_c[i/]);
 		[/if]
 	[/for]
 }	

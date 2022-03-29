@@ -15,11 +15,7 @@
 				'http://www.muml.org/pim/instance/1.0.0',
 				'http://www.muml.org/pim/realtimestatechart/1.0.0',
 				'http://www.muml.org/psm/1.0.0',
-				'http://www.muml.org/psm/muml_container/0.5.0',
-				'http://www.opendds.org/modeling/schemas/DCPS/1.0',
-				'http://www.opendds.org/modeling/schemas/Core/1.0',
-				'http://www.opendds.org/modeling/schemas/Application/1.0',
-				'http://www.opendds.org/modeling/schemas/Topics/1.0')/]
+				'http://www.muml.org/psm/muml_container/0.5.0')/]
 
 [import org::muml::c::adapter::componenttype::queries::stringQueries/]
 [import org::muml::c::adapter::componenttype::queries::ContainerQueries/]
@@ -73,7 +69,8 @@
 [/if]
 [if (isMqttUsed(container))]
 //MQTT specific includes
-//TODO
+//#include "container_lib/MqttCustomLib.h"
+//If MQTT is used, it must be already included in the main file to call the setup and loop functions
 [/if]
 //include the component_interface header
 #include "../[getFileNameComponentInterface(container.componentType, useSubDir)/]"

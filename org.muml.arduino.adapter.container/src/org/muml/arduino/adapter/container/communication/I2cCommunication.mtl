@@ -29,10 +29,9 @@
 */]
 [template public generateBuilderForI2cPortHandle(port:Port, portInstanceConfigs:Collection(PortInstanceConfiguration_I2C))]
 /**
- * 
  * @brief The Builder for an I2cHandle for port [port.name/]
- * @details creates a struct I2cHandle which encapsulates the logic for communication
- * 
+ *
+ * @details creates a struct I2cHandle which encapsulates the logic for communication 
  */
 static PortHandle* [getMethodNameForI2cPortHandleBuilder(port)/]([port.component.getBuilderStructName() /]* b, PortHandle *ptr){
 	ptr->type = PORT_HANDLE_TYPE_I2C;
@@ -47,6 +46,7 @@ static PortHandle* [getMethodNameForI2cPortHandleBuilder(port)/]([port.component
 	createAndRegisterI2cReceiver(&(handle->receivers['['/][j/][']'/]), 
 								[messageType.getIdentifierVariableName()/],
 								[messageBuffer.bufferSize.value /],
+								sizeof([messageType.getMessageType()/]);
 								[if messageBuffer.bufferOverflowAvoidanceStrategy=BufferOverflowAvoidanceStrategy::DISCARD_OLDEST_MESSAGE_IN_BUFFER] true [else] false [/if]);
 			[/for]
 		[/let]
@@ -55,7 +55,8 @@ static PortHandle* [getMethodNameForI2cPortHandleBuilder(port)/]([port.component
 	//create the handle for the DirectedTypedPort [port.name.toUpper()/] that has only 1 data type
 	I2cHandle* handle = malloc(sizeof(I2cHandle)+[if (port.oclAsType(DirectedTypedPort).inPort)]1[else]0[/if]*sizeof(I2cReceiver));
 	handle->numOfReceivers = 1
-	createAndRegisterI2cReceiver(&(handle->receivers['['/]0[']'/]), 0, 1, true);
+	//The message ID is 0, the buffer holds 1 item
+	createAndRegisterI2cReceiver(&(handle->receivers['['/]0[']'/]), 0, 1, sizeof([port.oclAsType(DirectedTypedPort).dataType.getTypeName()/]), true);
 	[/if]
 	handle->ownI2cAddress = b->[port.name.toUpper()/]_op.i2c_option.ownAddress;
 	handle->otherI2cAddress = b->[port.name.toUpper()/]_op.i2c_option.otherAddress;
