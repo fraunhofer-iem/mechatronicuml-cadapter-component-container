@@ -58,7 +58,7 @@ static struct MqttConfig* mqttConfig;
 
 [for (ci : ComponentInstance | cis->filter(AtomicComponentInstance)->select(c:AtomicComponentInstance |  c.componentType=ComponentKind::SOFTWARE_COMPONENT)->asOrderedSet())]
 [/for]
-int setup(){
+void setup(){
 	[for (ci : ComponentInstance | cis)]
 		[if (ci.componentType.oclIsKindOf(AtomicComponent))]
 	atomic_c[i/]= [ci.componentType.getContainerComponentCreateMethodName()/]([ci.getIdentifierVariableName()/]);
