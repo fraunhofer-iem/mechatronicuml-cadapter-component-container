@@ -83,40 +83,87 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
  * Generates the sending of a DiscretePort's message via MQTT.
 */]
 [template public generateSwitchCaseForMqttSending(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), messageType : MessageType)]
-//placeholder
+[generateCaseAndMqttHandle()/]
+	sendMqttMessage(mqttHandle->publishingTopic, [messageType.getIdentifierVariableName() /], msg);
+	break;
 [/template]
 
 [**
  * Generates the sending of a DirectedTypedPort's data via MQTT.
 */]
 [template public generateSwitchCaseForMqttSending(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))]
-//placeholder
+[generateCaseAndMqttHandle()/]
+	sendMqttMessage(mqttHandle->publishingTopic, 0, msg);
+	break;
 [/template]
 
 [**
  * Generates the check if an MQTT message is available for the corresponding DiscretePort.
 */]
 [template public generateSwitchCaseForMqttExists(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), messageType: MessageType)]
-//placeholder
+[generateCaseAndMqttHandle()/]
+	MessageBuffer* buffer = NULL;
+	for (i = 0; i < mqttHandle->numOfSubs; i++){
+		if (mqttHandle->subscribers['['/]i[']'/].messageId == [messageType.getIdentifierVariableName() /]){
+			buffer = mqttHandle->subscribers['['/]i[']'/].buffer;
+			break;
+		}
+	}
+	return MessageBuffer_doesMessageExists(buffer);
+	break;
 [/template]
 
 [**
  * Generates the check if new data of the corresponding DirectedTypedPort is available via MQTT.
 */]
 [template public generateSwitchCaseForMqttExists(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))]
-//placeholder 
+[generateCaseAndMqttHandle()/]
+	MessageBuffer* buffer = NULL;
+	for (i = 0; i < mqttHandle->numOfSubs; i++){
+		if (mqttHandle->subscribers['['/]i[']'/].messageId == 0){
+			buffer = mqttHandle->subscribers['['/]i[']'/].buffer;
+			break;
+		}
+	}
+	return MessageBuffer_doesMessageExists(buffer);
+	break;
 [/template]
 
 [**
  * Generates the receiving of a DiscretePort's message using MQTT.
 */]
 [template public generateSwitchCaseForMqttReceiving(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), messageType : MessageType)]
-//placeholder
+[generateCaseAndMqttHandle()/]
+	MessageBuffer* buffer = NULL;
+	for (i = 0; i < mqttHandle->numOfSubs; i++){
+		if (mqttHandle->subscribers['['/]i[']'/].messageId == [messageType.getIdentifierVariableName() /]){
+			buffer = mqttHandle->subscribers['['/]i[']'/].buffer;
+			break;
+		}
+	}
+	return MessageBuffer_dequeue(buffer, msg); [comment msg is a pointer that is handed to the method as parameter /]
+	break;
 [/template]
 
 [**
  * Generates the receiving of a DirectedTypedPort's data using MQTT.
 */]
 [template public generateSwitchCaseForMqttReceiving(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))]
-//placeholder
+[generateCaseAndMqttHandle()/]
+	MessageBuffer* buffer = NULL;
+	for (i = 0; i < mqttHandle->numOfSubs; i++){
+		if (mqttHandle->subscribers['['/]i[']'/].messageId == 0){
+			buffer = mqttHandle->subscribers['['/]i[']'/].buffer;
+			break;
+		}
+	}
+	return MessageBuffer_dequeue(buffer, msg); [comment msg is a pointer that is handed to the method as parameter /]
+	break;[/template]
+
+[**
+ * Generates the case statement for MQTT ports and the corresponding PortHandle.
+*/]
+[template private generateCaseAndMqttHandle()]
+case PORT_HANDLE_TYPE_MQTT:
+	MqttHandle = (MqttHandle*) port->handle->concreteHandle;
 [/template]
