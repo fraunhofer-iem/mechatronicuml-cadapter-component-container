@@ -28,6 +28,8 @@
 [template public generateMainFile(ecuConfig: ECUConfiguration, path : String, useSubDir : Boolean)]
 [comment Arduino sketches' main-files have to be called just as their parent directory - so don't call them main.ino! /]
 [file (path+ecuConfig.structuredResourceInstance.name+'.ino', false, 'UTF-8')]
+#define C99
+
 #include "[if (useSubDir)]lib/[/if]Debug.h"
 
 [comment include the I2C lib if I2C is used by the containers on this ECU /]
@@ -38,6 +40,7 @@
 [comment include the MQTT lib if MQTT is use by the containers on this ECU /]
 [if (ecuConfig.componentContainers.componentInstanceConfigurations.portInstanceConfigurations->exists(piConfig | piConfig.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
 #include "container_lib/MqttCustomLib.h"
+#include <WiFiEsp.h>
 
 static struct WiFiConfig* wifiConfig;
 static struct MqttConfig* mqttConfig;
@@ -78,13 +81,13 @@ void setup(){
 	[if (ecuConfig.componentContainers.componentInstanceConfigurations.portInstanceConfigurations->exists(piConfig | piConfig.oclIsKindOf(PortInstanceConfiguration_MQTT)))]
 		[let mqttPiConfig : PortInstanceConfiguration_MQTT = ecuConfig.componentContainers.componentInstanceConfigurations.portInstanceConfigurations->any(piConfig | piConfig.oclIsKindOf(PortInstanceConfiguration_MQTT)).oclAsType(PortInstanceConfiguration_MQTT)]
 	//collect the data required for the WiFi configuration
-	wifiConfig = malloc(sizeof(struct WiFiConfig));
+	wifiConfig = (struct WiFiConfig*) malloc(sizeof(struct WiFiConfig));
 	wifiConfig->ssid = "[mqttPiConfig.WiFi_ssid.toString()/]";
 	wifiConfig->pass = "[mqttPiConfig.WiFi_pass.toString()/]";
 	wifiConfig->status = WL_IDLE_STATUS;
 
 	//collect the data required for the MQTT configuration
-	mqttConfig = malloc(sizeof(struct MqttConfig));
+	mqttConfig = (struct MqttConfig*) malloc(sizeof(struct MqttConfig));
 	mqttConfig->serverIPAddress = "[mqttPiConfig.MQTT_serverAddress.toString()/]";
 	mqttConfig->serverPort = [mqttPiConfig.MQTT_serverPort/];
 	mqttConfig->clientName = "[ecuConfig.name.toString() /]";

@@ -32,7 +32,7 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
 	ptr->type = PORT_HANDLE_TYPE_MQTT;
 	[if (port.oclIsKindOf(DiscretePort))]
 	//create the handle for the discrete port [port.name.toUpper() /] with all its message types
-	MqttHandle* handle = malloc(sizeof(MqttHandle)+[port.oclAsType(DiscretePort).receiverMessageTypes->size()/]*sizeof(MqttSubscriber));
+	MqttHandle* handle = (MqttHandle*) malloc(sizeof(MqttHandle)+[port.oclAsType(DiscretePort).receiverMessageTypes->size()/]*sizeof(MqttSubscriber));
 	handle->numOfSubs = [port.oclAsType(DiscretePort).receiverMessageTypes->size()/];
 	//register a subscriber for every message type of the port
 	[for (messageBuffer : MessageBuffer | port.oclAsType(DiscretePort).receiverMessageBuffer)]
@@ -165,5 +165,5 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
 */]
 [template private generateCaseAndMqttHandle()]
 case PORT_HANDLE_TYPE_MQTT:
-	MqttHandle = (MqttHandle*) port->handle->concreteHandle;
+	mqttHandle = (MqttHandle*) port->handle->concreteHandle;
 [/template]
