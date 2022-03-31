@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 //Global for all Container (e.g. Lib_Container)
-#include "../lib/port.h"
+#include "port.h" //no subdirs for Arduino build
 #include "MessageBuffer.h"
 
 

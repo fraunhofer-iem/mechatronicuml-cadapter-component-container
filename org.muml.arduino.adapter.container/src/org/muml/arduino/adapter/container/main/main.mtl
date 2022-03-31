@@ -37,12 +37,13 @@ Currently, only MQTT and I2C are supported.
 [template private createArduinoContainers(ecuConfig: ECUConfiguration)
 	{
 		path : String = ecuConfig.structuredResourceInstance.name+'/' ;
+		useSubDirectories : Boolean = false;
 	}
 ]
-	[ecuConfig.generateMainFile(path, true)/]
-	[ecuConfig.generateECUIdentifier(true, path) /]
+	[ecuConfig.generateMainFile(path, useSubDirectories)/]
+	[ecuConfig.generateECUIdentifier(useSubDirectories, path) /]
 	[for (container : ComponentContainer | ecuConfig.componentContainers)]
-		[container.generateContainerHeader(path, true) /]
-		[container.generateContainer(true, path) /]
+		[container.generateContainerHeader(path, useSubDirectories) /]
+		[container.generateContainer(useSubDirectories, path) /]
 	[/for]
 [/template]

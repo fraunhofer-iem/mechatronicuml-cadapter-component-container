@@ -84,7 +84,7 @@ typedef struct [component.getBuilderStructName()/] {
 static const [component.getBuilderStructName()/] INIT_BUILDER = { 0, [for (port : Port | component.ports) separator (',') ] PORT_DEACTIVATED, NULL, .[port.name.toUpper()/]_op.local_option={0,0}  [/for] };
 [/template] 
 
-[template public generateComponetInstancePool(container:ComponentContainer)]
+[template public generateComponentInstancePool(container:ComponentContainer)]
 /**
 *
 *@brief The pool of component instance of Component Type [container.componentType.getName()/]

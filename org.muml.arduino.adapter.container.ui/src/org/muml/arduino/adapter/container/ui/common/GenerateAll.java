@@ -101,9 +101,9 @@ public class GenerateAll {
 		gen0.setGenerationID(generationID);
 		gen0.doGenerate(BasicMonitor.toMonitor(monitor));
 			
-		// Get the resource folder and copy all contents to the generation target folder.
+		// Get the resources/container_lib folder and copy all contents to the generation target folder.
 		URL resources = FileLocator
-				.toFileURL(Platform.getBundle(org.muml.arduino.adapter.container.Activator.PLUGIN_ID).getEntry("resources"));
+				.toFileURL(Platform.getBundle(org.muml.arduino.adapter.container.Activator.PLUGIN_ID).getEntry("resources/container_lib"));
 		File sourceFolder = null;
 		try {
 			sourceFolder = new File(resources.toURI());

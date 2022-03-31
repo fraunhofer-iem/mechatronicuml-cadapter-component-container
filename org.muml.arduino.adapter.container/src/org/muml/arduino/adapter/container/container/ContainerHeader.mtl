@@ -28,7 +28,7 @@
  * that are required for the component type this container can handle.
 */]
 [template public generateContainerHeader(container:ComponentContainer, path: String, useSubDir:Boolean)]
-	[file (path+getFileName(container, true, useSubDir), false, 'UTF-8')]
+	[file (path+getFileNameCpp(container, true, useSubDir), false, 'UTF-8')]
 #ifndef [getHeaderDefine(container)/]
 #define [getHeaderDefine(container)/]
 
@@ -53,7 +53,7 @@
 [/template]	
 
 
-[template public includes(container : ComponentContainer, useSubDir: Boolean)]
+[template private includes(container : ComponentContainer, useSubDir: Boolean)]
 // Library
 #include "[if (useSubDir)]../container_lib/[/if]ContainerTypes.h"
 #include "[if (useSubDir)]../container_lib/[/if]LocalBufferManager.h"
@@ -64,23 +64,23 @@
 
 [if isI2cUsed(container)]
 //I2C Specific includes
-#include "../container_lib/I2cCustomLib.h"
+#include "[if (useSubDir)]../container_lib/[/if]I2cCustomLib.h"
 [/if]
 [if (isMqttUsed(container))]
 //MQTT specific includes
-#include "../container_lib/MqttCustomLib.h"
+#include "[if (useSubDir)]../container_lib/[/if]MqttCustomLib.h"
 [/if]
 //include the component_interface header
-#include "../[getFileNameComponentInterface(container.componentType, useSubDir)/]"
+#include "[if (useSubDir)]../[/if][getFileNameComponentInterface(container.componentType, useSubDir)/]"
 //include api mapping headers
 [for (cInst : ComponentInstance | container.componentInstances)]
 	[for (cPort : ContinuousPort | container.componentType.ports->filter(ContinuousPort))]
-#include "../APImappings/[cInst.getIdentifierVariableName()/][cPort.getVariableName()/]accessCommand.h"
+#include "[if (useSubDir)]../APImappings/[/if][cInst.getIdentifierVariableName()/][cPort.getVariableName()/]accessCommand.h"
 	[/for]
 [/for] 
 [/template]
 
-[template public containerOperations(container:ComponentContainer)]
+[template private containerOperations(container:ComponentContainer)]
 /**
  * @brief Forward Declaration of the method [getContainerComponentCreateMethod(container)/]
  * @details The method for initializing and creating a component instance of type: [container.componentType/]

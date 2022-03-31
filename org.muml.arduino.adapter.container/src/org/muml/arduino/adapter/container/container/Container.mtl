@@ -34,12 +34,12 @@
 */]
 [template public generateContainer(container:ComponentContainer, useSubDir:Boolean, path: String)]
 	[comment generate the container implementation file /]
-	[file (path+getFileNameCpp(container, false, true), false, 'UTF-8')] [comment Cpp for Arduino /]
-		[includes(container)/]
+	[file (path+getFileNameCpp(container, false, useSubDir), false, 'UTF-8')] [comment Cpp for Arduino /]
+		[includes(container, useSubDir)/]
 		
 		[comment Reuse the C Adapter ContainerBuilder here/]
 		[generateBuilderStruct(container.componentType)/]
-		[generateComponetInstancePool(container)/]
+		[generateComponentInstancePool(container)/]
 
 		[comment generate the Arduino-specific methods to check if a message exists, send receive messages used by the component/]
 		[generateCommunicationMethods(container)/] 
@@ -60,9 +60,9 @@
 [/template]	
 
 
-[template public includes(container : ComponentContainer)]
+[template private includes(container : ComponentContainer, useSubDir:Boolean)]
 // Container HeaderFile
-#include "[container.getFileName(true, false)/]"
+#include "[container.getFileName(true, useSubDir)/]"
 [/template]
 
 
