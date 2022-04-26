@@ -4,9 +4,11 @@
  *  Created on: 13.03.2014
  *      Author: badrobot
  *
- * copied from orglmuml.c.adapter.container/resources/container_lib
+ * copied from org.muml.c.adapter.container/resources/container_lib
  */
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include "MessageBuffer.h"
 
 MessageBuffer* MessageBuffer_create(size_t capacity, size_t elementSize,
@@ -80,3 +82,7 @@ void MessageBuffer_destroy(MessageBuffer* buf) {
 		free(buf);
 	}
 }
+
+#ifdef __cplusplus
+}
+#endif

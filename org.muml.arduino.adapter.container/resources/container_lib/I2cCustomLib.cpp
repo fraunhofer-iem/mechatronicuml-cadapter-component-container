@@ -1,5 +1,4 @@
-#include "I2cCustomLib.h"
-#include <ArduinoJson.h>
+#include "I2cCustomLib.hpp"
 
 #define MAX_I2C_MESSAGE_SIZE_IN_USE 512
 
@@ -10,39 +9,61 @@ struct I2cReceiverListElement {
 
 static struct I2cReceiverListElement *i2cReceiverList = NULL; /*init an empty list*/
 
-static void sendI2cMessage(uint8_T receiverAddress,
-                    uint16_T messageId,
-                    void* message){
-    char *messageString = marshal(messageId, message);
-    Wire.beginTransmission(receiverAddress);
-    Wire.write(messageString);
-    Wire.endTransmission();
+/**
+ * @brief Prepends the message type to the message with a separator: messageTypeName|message
+ * 
+ * @param messageTypeName 
+ * @param message 
+ * @return byte* array of the length: messageLength + strlen(messageTypeName+1)
+ */
+static byte* marshal(char* messageTypeName, byte* message, size_t messageLength){
+    // TODO
+    return (byte *) "test|message";
 }
 
-static void i2cCommunication_setup(uint8_T ownI2cAddress){
-    Wire.begin(ownI2cAddress);
-    Wire.onReceive(receiveI2cMessageIntoBuffer);
+static char* unmarshalTypeName(byte* receivedBytes){
+    // TODO
+    return "test";
 }
 
+/**
+ * @brief Callback function for the I2C receiver. Puts it into the corresponding message buffer.
+ * 
+ * @param numberOfBytesReceived the length of the message
+ */
 static void receiveI2cMessageIntoBuffer(int numberOfBytesReceived){
-    char messageStringBuffer[numberOfBytesReceived +1]; //allocate space to store the message
-    memset(messageStringBuffer, 0, numberOfBytesReceived); //fill the string buffer with 0s
-    Wire.readBytes(messageStringBuffer, numberOfBytesReceived); //write the message into the string buffer
-    uint8_T messageId = unmarshalType(messageStringBuffer); //get the messasgeId
+    byte receivedBytes[numberOfBytesReceived]; //allocate space to store the message
+    Wire.readBytes(receivedBytes, numberOfBytesReceived); //write the message into the buffer
+    char* messageTypeName = unmarshalTypeName(receivedBytes); //get the messasgeId
     struct I2cReceiverListElement **list = &i2cReceiverList;
     MessageBuffer *bufferToFill = NULL;
     while(*list != NULL){ //iterate through the list
         I2cReceiver *currentReceiver = (*list)->receiver;
-        if (currentReceiver->messageId == messageId){
+        if (strcmp(currentReceiver->messageTypeName, messageTypeName) == 0){
             bufferToFill = currentReceiver->buffer;
             break;
         }
         list = &(*list)->nextElement;
     }
     if (bufferToFill != NULL){
-        //TODO: messageStringBuffer holds a JSON string - should be unmarshalled if content matters
-        MessageBuffer_enqueue(bufferToFill, messageStringBuffer);
+        //TODO: receivedBytes starts with the messageTypeName - should be unmarshalled if content matters
+        MessageBuffer_enqueue(bufferToFill, receivedBytes);
     }
+}
+
+static void sendI2cMessage(uint8_T receiverAddress,
+                            char* messageTypeName,
+                            byte* message,
+                            size_t messageLength){
+    byte *marhsalledMessage = marshal(messageTypeName, message, messageLength);
+    Wire.beginTransmission((int) receiverAddress);
+    Wire.write(marhsalledMessage, messageLength + strlen(messageTypeName+1));
+    Wire.endTransmission();
+}
+
+static void i2cCommunication_setup(uint8_T ownI2cAddress){
+    Wire.begin((int) ownI2cAddress);
+    Wire.onReceive(receiveI2cMessageIntoBuffer);
 }
 
 static void appendI2cReceiverToList(struct I2cReceiverListElement **list, I2cReceiver *newReceiver){
@@ -57,27 +78,11 @@ static void appendI2cReceiverToList(struct I2cReceiverListElement **list, I2cRec
 }
 
 static void createAndRegisterI2cReceiver(I2cReceiver* receiver,
-                        uint16_T messageId,
+                        char* messageTypeName,
                         size_t bufferCapacity,
                         size_t messageSize,
                         bool_t bufferMode){
     receiver->buffer = MessageBuffer_create(bufferCapacity, messageSize, bufferMode);
-    receiver->messageId = messageId;
+    receiver->messageTypeName = messageTypeName;
     appendI2cReceiverToList(&i2cReceiverList, receiver);
-}
-
-static char* marshal(uint16_T messageId, void* message){
-    DynamicJsonDocument doc(MAX_I2C_MESSAGE_SIZE_IN_USE);
-    doc["msgId"] = messageId;
-    doc["payload"] = message;
-
-    char jsonString[MAX_I2C_MESSAGE_SIZE_IN_USE];
-    serializeJson(doc, jsonString);
-    return jsonString;
-}
-
-static uint16_T unmarshalType(char* jsonString){
-    DynamicJsonDocument doc(MAX_I2C_MESSAGE_SIZE_IN_USE);
-    deserializeJson(doc, jsonString);
-    return (uint16_T) doc["msgId"];
 }

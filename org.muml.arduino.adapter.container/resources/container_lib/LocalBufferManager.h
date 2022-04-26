@@ -1,3 +1,6 @@
+/**
+ * copied and adapted from org.muml.c.adapter.container/resources/container_lib
+ */
 #ifndef LOCAL_BUFFER_MANAGER_
 #define LOCAL_BUFFER_MANAGER_
 

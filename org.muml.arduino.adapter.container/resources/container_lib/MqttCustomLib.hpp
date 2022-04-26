@@ -2,12 +2,10 @@
 #define MQTT_CUSTOM_LIB_H
 
 #include "ContainerTypes.h"
-
-#define _SS_MAX_RX_BUFF 256
+#include <PubSubClient.h>
 
 typedef struct MqttSubscriber {
-    char* subscriptionTopic;
-    uint16_T messageId;
+    char* topic;
     MessageBuffer* buffer;
 } MqttSubscriber;
 
@@ -58,14 +56,14 @@ void MqttCommunication_loop(struct MqttConfig *mqttConfig);
  * 
  * @param subscriber the pointer to the subscriber to be created
  * @param subscriptionTopic the topic path for the subscription
- * @param messageId the message ID so subscribe to
+ * @param messageTypeName the message ID so subscribe to
  * @param bufferCapacity the capacity of the message buffer
  * @param messageSize the size of a message element
  * @param bufferMode false: discard new incoming message; true: replace oldest message
  */
 void createAndRegisterMqttSubscriber(MqttSubscriber* subscriber,
                                     char* subscriptionTopic,
-                                    uint16_T messageId,
+                                    char* messageTypeName,
                                     size_t bufferCapacity,
                                     size_t messageSize,
                                     bool_t bufferMode);
@@ -74,11 +72,12 @@ void createAndRegisterMqttSubscriber(MqttSubscriber* subscriber,
  * @brief Send a message via MQTT.
  * 
  * @param publishingTopic the topic path for publishing
- * @param messageId the message ID of the message to send
+ * @param messageTypeName the message type name of the message to send
  * @param message the message to be sent
+ * @param messageLength the length of the message to be sent
  */
 void sendMqttMessage(char* publishingTopic,
-                    uint16_T messageId,
-                    void* message);
-
+                    char* messageTypeName,
+                    byte* message,
+                    unsigned int messageLength);
 #endif /* MQTT_CUSTOM_LIB_H */

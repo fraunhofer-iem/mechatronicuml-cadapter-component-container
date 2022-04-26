@@ -64,11 +64,11 @@
 
 [if isI2cUsed(container)]
 //I2C Specific includes
-#include "[if (useSubDir)]../container_lib/[/if]I2cCustomLib.h"
+#include "[if (useSubDir)]../container_lib/[/if]I2cCustomLib.hpp"
 [/if]
 [if (isMqttUsed(container))]
 //MQTT specific includes
-#include "[if (useSubDir)]../container_lib/[/if]MqttCustomLib.h"
+#include "[if (useSubDir)]../container_lib/[/if]MqttCustomLib.hpp"
 [/if]
 //include the component_interface header
 #include "[if (useSubDir)]../[/if][getFileNameComponentInterface(container.componentType, useSubDir)/]"

@@ -50,30 +50,30 @@
 	[for (componentInstanceCfg : ContainerComponentInstanceConfiguration | cicfgs)]
 		case [componentInstanceCfg.componentInstance.getIdentifierVariableName()/]:
 			b.ID = ID;
-			[for (cPort : ContinuousPort | container.componentType.ports->filter(ContinuousPort))]
-				b.[getVariableName(cPort)/]AccessFunction=&[componentInstanceCfg.componentInstance.getIdentifierVariableName()/][getVariableName(cPort)/]accessCommand;
-			[/for]
-			[for (portCfg : PortInstanceConfiguration | componentInstanceCfg.portInstanceConfigurations)]
-			[comment Read all of the configuration data for the Port Instances from the PortInstanceConfigurations /]
-				[if (portCfg.oclIsKindOf(PortInstanceConfiguration_Local))]
-					b.[portCfg.portInstance.portType.name.toUpper()/] = PORT_ACTIVE;
-					b.create[portCfg.portInstance.portType.name.toUpper()/]Handle = &[portCfg.portInstance.portType.getMethodNameForLocalPortBuilder()/];
-					b.[portCfg.portInstance.portType.name.toUpper()/]_op.local_option.pubID = [portCfg.oclAsType(PortInstanceConfiguration_Local).ownID/];
-					b.[portCfg.portInstance.portType.name.toUpper()/]_op.local_option.subID = [portCfg.oclAsType(PortInstanceConfiguration_Local).writersID/];
-				[/if]
-				[if (portCfg.oclIsKindOf(PortInstanceConfiguration_MQTT))]
-					b.[portCfg.portInstance.portType.name.toUpper()/] = PORT_ACTIVE;
-					b.create[portCfg.portInstance.portType.name.toUpper()/]Handle = &[portCfg.portInstance.portType.getMethodNameForMqttPortHandleBuilder()/];
-					b.[portCfg.portInstance.portType.name.toUpper() /]_op.mqtt_option.publishingTopic = "[portCfg.oclAsType(PortInstanceConfiguration_MQTT).publishingTopic.toString() /]";
-					b.[portCfg.portInstance.portType.name.toUpper() /]_op.mqtt_option.subscriptionTopic = "[portCfg.oclAsType(PortInstanceConfiguration_MQTT).subscriptionTopic.toString() /]";
-				[/if]
-				[if (portCfg.oclIsKindOf(PortInstanceConfiguration_I2C))]
-					b.[portCfg.portInstance.portType.name.toUpper()/] = PORT_ACTIVE;
-					b.create[portCfg.portInstance.portType.name.toUpper()/]Handle = &[portCfg.portInstance.portType.getMethodNameForI2cPortHandleBuilder() /];
-					b.[portCfg.portInstance.portType.name.toUpper()/]_op.i2c_option.ownAddress = [portCfg.oclAsType(PortInstanceConfiguration_I2C).ownI2cAddress /];
-					b.[portCfg.portInstance.portType.name.toUpper()/]_op.i2c_option.otherAddress = [portCfg.oclAsType(PortInstanceConfiguration_I2C).otherI2cAddress /];
-				[/if]
-			[/for]
+		[for (cPort : ContinuousPort | container.componentType.ports->filter(ContinuousPort))]
+			b.[getVariableName(cPort)/]AccessFunction=&[componentInstanceCfg.componentInstance.getIdentifierVariableName()/][getVariableName(cPort)/]accessCommand;
+		[/for]
+		[for (portCfg : PortInstanceConfiguration | componentInstanceCfg.portInstanceConfigurations)]
+		[comment Read all of the configuration data for the Port Instances from the PortInstanceConfigurations /]
+			[if (portCfg.oclIsKindOf(PortInstanceConfiguration_Local))]
+			b.[portCfg.portInstance.portType.name.toUpper()/] = PORT_ACTIVE;
+			b.create[portCfg.portInstance.portType.name.toUpper()/]Handle = &[portCfg.portInstance.portType.getMethodNameForLocalPortBuilder()/];
+			b.[portCfg.portInstance.portType.name.toUpper()/]_op.local_option.pubID = [portCfg.oclAsType(PortInstanceConfiguration_Local).ownID/];
+			b.[portCfg.portInstance.portType.name.toUpper()/]_op.local_option.subID = [portCfg.oclAsType(PortInstanceConfiguration_Local).writersID/];
+			[/if]
+			[if (portCfg.oclIsKindOf(PortInstanceConfiguration_MQTT))]
+			b.[portCfg.portInstance.portType.name.toUpper()/] = PORT_ACTIVE;
+			b.create[portCfg.portInstance.portType.name.toUpper()/]Handle = &[portCfg.portInstance.portType.getMethodNameForMqttPortHandleBuilder()/];
+			b.[portCfg.portInstance.portType.name.toUpper() /]_op.mqtt_option.publishingTopic = "[portCfg.oclAsType(PortInstanceConfiguration_MQTT).publishingTopic.toString() /]";
+			b.[portCfg.portInstance.portType.name.toUpper() /]_op.mqtt_option.subscriptionTopic = "[portCfg.oclAsType(PortInstanceConfiguration_MQTT).subscriptionTopic.toString() /]";
+			[/if]
+			[if (portCfg.oclIsKindOf(PortInstanceConfiguration_I2C))]
+			b.[portCfg.portInstance.portType.name.toUpper()/] = PORT_ACTIVE;
+			b.create[portCfg.portInstance.portType.name.toUpper()/]Handle = &[portCfg.portInstance.portType.getMethodNameForI2cPortHandleBuilder() /];
+			b.[portCfg.portInstance.portType.name.toUpper()/]_op.i2c_option.ownAddress = [portCfg.oclAsType(PortInstanceConfiguration_I2C).ownI2cAddress /];
+			b.[portCfg.portInstance.portType.name.toUpper()/]_op.i2c_option.otherAddress = [portCfg.oclAsType(PortInstanceConfiguration_I2C).otherI2cAddress /];
+			[/if]
+		[/for]
 		break;
 	[/for]	
 	default:

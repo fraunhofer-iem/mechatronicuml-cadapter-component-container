@@ -2,11 +2,12 @@
 #define I2C_CUSTOM_LIB_H
 
 #include <Wire.h>
+#include <Arduino.h>
 
 #include "ContainerTypes.h"
 
 typedef struct I2cReceiver {
-    uint16_T messageId;
+    char* messageTypeName;
     MessageBuffer* buffer;
 } I2cSubscriber;
 
@@ -28,13 +29,13 @@ void I2cCommunication_setup(uint8_T ownI2cAddress);
  * @brief Create and register an I2c Receiver object
  * 
  * @param receiver a pointer to the receiver to be created
- * @param messageId the messageId to receive
+ * @param messageTypeName the message type name of the message to receive
  * @param bufferCapacity the capacity of the buffer
  * @param messageSize the size of the message to be received
  * @param bufferMode false: discard new incoming message; true: replace oldest message
  */
 void createAndRegisterI2cReceiver(I2cReceiver* receiver,
-                        uint16_T messageId,
+                        char* messageTypeName,
                         size_t bufferCapacity,
                         size_t messageSize,
                         bool_t bufferMode);
@@ -43,11 +44,13 @@ void createAndRegisterI2cReceiver(I2cReceiver* receiver,
  * @brief Send a message via I2C.
  * 
  * @param receiverAddress the I2C bus address of the receiving ECU
- * @param messageId the messageId of the message to send
+ * @param messageTypeName the message type name of the message to send
  * @param message the actual message
+ * @param messageLength the length of the message
  */
 void sendI2cMessage(uint8_T receiverAddress,
-                    uint16_T messageId,
-                    void* message);
+                    char* messageTypeName,
+                    byte* message,
+                    size_t messageLength);
 
 #endif /* I2C_CUSTOM_LIB_H */

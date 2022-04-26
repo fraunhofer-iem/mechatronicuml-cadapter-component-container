@@ -33,30 +33,30 @@
  * (These stubs may be replaced by generating the code from the APIMappingML).
 */]
 [template public generateContainer(container:ComponentContainer, useSubDir:Boolean, path: String)]
-	[comment generate the container implementation file /]
-	[file (path+getFileNameCpp(container, false, useSubDir), false, 'UTF-8')] [comment Cpp for Arduino /]
-		[includes(container, useSubDir)/]
-		
-		[comment Reuse the C Adapter ContainerBuilder here/]
-		[generateBuilderStruct(container.componentType)/]
-		[generateComponentInstancePool(container)/]
+[comment generate the container implementation file /]
+[file (path+getFileNameCpp(container, false, useSubDir), false, 'UTF-8')] [comment Cpp for Arduino /]
+[includes(container, useSubDir)/]
 
-		[comment generate the Arduino-specific methods to check if a message exists, send receive messages used by the component/]
-		[generateCommunicationMethods(container)/] 
-		
-		[comment Reuse the C Adapter ContainerBuilder here/]
-		[generateComponentBuilder(container.componentType)/]
-		
-		[comment generate the Arduino-specific Port Handles /]
-		[generateBuilderForPortHandles(container) /]
-		
-		[comment Reuse the C Adapter ContainerComponentInstanceConfiguration here/]
-		[generateCreateMethodForComponentInstances(container, container.componentInstanceConfigurations)/]
-		
-	[/file]
+[comment Reuse the C Adapter ContainerBuilder here/]
+[generateBuilderStruct(container.componentType)/]
+[generateComponentInstancePool(container)/]
+
+[comment generate the Arduino-specific methods to check if a message exists, send receive messages used by the component/]
+[generateCommunicationMethods(container)/] 
+
+[comment Reuse the C Adapter ContainerBuilder here/]
+[generateComponentBuilder(container.componentType)/]
+
+[comment generate the Arduino-specific Port Handles /]
+[generateBuilderForPortHandles(container) /]
+
+[comment Reuse the C Adapter ContainerComponentInstanceConfiguration here/]
+[generateCreateMethodForComponentInstances(container, container.componentInstanceConfigurations)/]
 	
-	[comment generate the files in APImappings/... that contain the access command stubs /]
-	[generateAccessCommandStubsAsFiles(container, container.componentInstanceConfigurations)/]
+[/file]
+
+[comment generate the files in APImappings/... that contain the access command stubs /]
+[generateAccessCommandStubsAsFiles(container, container.componentInstanceConfigurations)/]
 [/template]	
 
 

@@ -35,16 +35,16 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
 	MqttHandle* handle = (MqttHandle*) malloc(sizeof(MqttHandle)+[port.oclAsType(DiscretePort).receiverMessageTypes->size()/]*sizeof(MqttSubscriber));
 	handle->numOfSubs = [port.oclAsType(DiscretePort).receiverMessageTypes->size()/];
 	//register a subscriber for every message type of the port
-	[for (messageBuffer : MessageBuffer | port.oclAsType(DiscretePort).receiverMessageBuffer)]
-		[let j : Integer = i-1]
-			[for (messageType : MessageType | messageBuffer.messageType)]
+	[for (messageType : MessageType | port.oclAsType(DiscretePort).receiverMessageTypes)]
+		[let j : Integer = i-1 ]
+			[let messageBuffer : MessageBuffer = port.oclAsType(DiscretePort).receiverMessageBuffer->select(buffer : MessageBuffer | buffer.messageType->exists(msgT : MessageType | msgT=messageType))->first()]
 	createAndRegisterMqttSubscriber(&(handle->subscribers['['/][j/][']'/]),
 									b->[port.name.toUpper()/]_op.mqtt_option.subscriptionTopic,
-									[messageType.getIdentifierVariableName() /],
+									"[messageType.getName() /]",
 									[messageBuffer.bufferSize.value /],
 									sizeof([messageType.getMessageType()/]),
-									[if messageBuffer.bufferOverflowAvoidanceStrategy=BufferOverflowAvoidanceStrategy::DISCARD_OLDEST_MESSAGE_IN_BUFFER] true [else] false [/if]);
-			[/for]
+									[if messageBuffer.bufferOverflowAvoidanceStrategy=BufferOverflowAvoidanceStrategy::DISCARD_OLDEST_MESSAGE_IN_BUFFER] true [else] false [/if]);	
+			[/let]
 		[/let]
 	[/for]
 	[else] [comment if DirectedTypedPort /]
@@ -54,7 +54,7 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
 	//The message ID is 0, the buffer holds 1 item
 	createAndRegisterMqttSubscriber(&(handle->subscribers['['/]0[']'/], 
 									b->[port.name.toUpper()/]_op.mqtt_option.subscriptionTopic,
-									0, 1, sizeof([port.oclAsType(DirectedTypedPort).dataType.getTypeName()/]), true);
+									"[port.oclAsType(DirectedTypedPort).dataType.getTypeName()/]", 1, sizeof([port.oclAsType(DirectedTypedPort).dataType.getTypeName()/]), true);
 	[/if]
 	handle->publishingTopic = b->[port.name.toUpper()/]_op.mqtt_option.publishingTopic;
 	handle->subscriptionTopic = b->[port.name.toUpper()/]_op.mqtt_option.subscriptionTopic;
@@ -68,33 +68,61 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
  * Declares the variables that are required for sending messages using MQTT.
 */]
 [template public generateDeclarationsForMqttSending()]
-	MqttHandle* mqttHandle;
+MqttHandle* mqttHandle;
 [/template]
 
 [**
  * Declares the variables that are required for receiving messages using MQTT.
 */]
 [template public generateDeclarationsForMqttReceiving()]
-	MqttHandle* mqttHandle;
-	int i;
+MqttHandle* mqttHandle;
+int i;
 [/template]
+
+[**
+ * Generate the library call for the sending of a message using MQTT for a DiscretePort.
+*/]
+[template private generateMqttSendingMethod(messageType : MessageType)]
+sendMqttMessage(mqttHandle->publishingTopic, "[messageType.getName()/]", msg, sizeof([messageType.getMessageType()/])); [comment msg is a pointer that is handed to the method as parameter /]
+[/template]
+
+[**
+ * Generate the library call for the sending of a message using MQTT for a DirectedTypedPort.
+*/]
+[template private generateMqttSendingMethod(dataType : DataType)]
+sendMqttMessage(mqttHandle->publishingTopic, "[dataType.getTypeName()/]", msg, sizeof([dataType.getTypeName()/])); [comment msg is a pointer that is handed to the method as parameter /]
+[/template]
+
 
 [**
  * Generates the sending of a DiscretePort's message via MQTT.
 */]
 [template public generateSwitchCaseForMqttSending(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), messageType : MessageType)]
 [generateCaseAndMqttHandle()/]
-	sendMqttMessage(mqttHandle->publishingTopic, [messageType.getIdentifierVariableName() /], msg);
+	[generateMqttSendingMethod(messageType) /]
 	break;
 [/template]
 
 [**
  * Generates the sending of a DirectedTypedPort's data via MQTT.
 */]
-[template public generateSwitchCaseForMqttSending(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))]
+[template public generateSwitchCaseForMqttSending(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), dataType : DataType)]
 [generateCaseAndMqttHandle()/]
-	sendMqttMessage(mqttHandle->publishingTopic, 0, msg);
+	[generateMqttSendingMethod(dataType) /]
 	break;
+[/template]
+
+[**
+ * Generates the loop to find the correct subscriber and retrieve its buffer.
+*/]
+[template private generateFindBufferLoop(messageTypeName : String)]
+MessageBuffer* buffer = NULL;
+for (i = 0; i < mqttHandle->numOfSubs; i++){
+	if (strcmp(mqttHandle->subscribers['['/]i[']'/].messageTypeName, [messageTypeName /]) == 0){
+		buffer = mqttHandle->subscribers['['/]i[']'/].buffer;
+		break;
+	}
+}
 [/template]
 
 [**
@@ -102,13 +130,7 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
 */]
 [template public generateSwitchCaseForMqttExists(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), messageType: MessageType)]
 [generateCaseAndMqttHandle()/]
-	MessageBuffer* buffer = NULL;
-	for (i = 0; i < mqttHandle->numOfSubs; i++){
-		if (mqttHandle->subscribers['['/]i[']'/].messageId == [messageType.getIdentifierVariableName() /]){
-			buffer = mqttHandle->subscribers['['/]i[']'/].buffer;
-			break;
-		}
-	}
+	[generateFindBufferLoop(messageType.getName())/]
 	return MessageBuffer_doesMessageExists(buffer);
 	break;
 [/template]
@@ -116,15 +138,9 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
 [**
  * Generates the check if new data of the corresponding DirectedTypedPort is available via MQTT.
 */]
-[template public generateSwitchCaseForMqttExists(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))]
+[template public generateSwitchCaseForMqttExists(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), dataType : DataType)]
 [generateCaseAndMqttHandle()/]
-	MessageBuffer* buffer = NULL;
-	for (i = 0; i < mqttHandle->numOfSubs; i++){
-		if (mqttHandle->subscribers['['/]i[']'/].messageId == 0){
-			buffer = mqttHandle->subscribers['['/]i[']'/].buffer;
-			break;
-		}
-	}
+	[generateFindBufferLoop(dataType.getTypeName())/]
 	return MessageBuffer_doesMessageExists(buffer);
 	break;
 [/template]
@@ -134,13 +150,7 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
 */]
 [template public generateSwitchCaseForMqttReceiving(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), messageType : MessageType)]
 [generateCaseAndMqttHandle()/]
-	MessageBuffer* buffer = NULL;
-	for (i = 0; i < mqttHandle->numOfSubs; i++){
-		if (mqttHandle->subscribers['['/]i[']'/].messageId == [messageType.getIdentifierVariableName() /]){
-			buffer = mqttHandle->subscribers['['/]i[']'/].buffer;
-			break;
-		}
-	}
+	[generateFindBufferLoop(messageType.getName()) /]
 	return MessageBuffer_dequeue(buffer, msg); [comment msg is a pointer that is handed to the method as parameter /]
 	break;
 [/template]
@@ -148,17 +158,12 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
 [**
  * Generates the receiving of a DirectedTypedPort's data using MQTT.
 */]
-[template public generateSwitchCaseForMqttReceiving(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT))]
+[template public generateSwitchCaseForMqttReceiving(portInstanceConfigs : Collection(PortInstanceConfiguration_MQTT), dataType : DataType)]
 [generateCaseAndMqttHandle()/]
-	MessageBuffer* buffer = NULL;
-	for (i = 0; i < mqttHandle->numOfSubs; i++){
-		if (mqttHandle->subscribers['['/]i[']'/].messageId == 0){
-			buffer = mqttHandle->subscribers['['/]i[']'/].buffer;
-			break;
-		}
-	}
+	[generateFindBufferLoop(dataType.getTypeName())/]
 	return MessageBuffer_dequeue(buffer, msg); [comment msg is a pointer that is handed to the method as parameter /]
-	break;[/template]
+	break;
+[/template]
 
 [**
  * Generates the case statement for MQTT ports and the corresponding PortHandle.

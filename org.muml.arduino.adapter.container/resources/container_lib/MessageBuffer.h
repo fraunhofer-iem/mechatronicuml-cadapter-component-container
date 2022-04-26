@@ -4,10 +4,14 @@
  * @brief This file specifies the MessageBuffer, which are contained at the Components
  * @details  The MessageBuffer are used at the Components to store  MiddlewareMessage%s
  *
- * copied from orglmuml.c.adapter.container/resources/container_lib
+ * copied and adapted from org.muml.c.adapter.container/resources/container_lib
  */
 #ifndef MESSAGEBUFFER_H_
 #define MESSAGEBUFFER_H_
+
+#ifdef __cplusplus
+  extern "C" {
+#endif
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,7 +19,7 @@
 
 
 
-#include "../types/standardTypes.h" // The standardTypes.h are located in the lib directory of the component type code
+#include "standardTypes.h" // The standardTypes.h are located in the lib directory of the component type code
 // use /types/standardTypes.h and NOT /lib/standardTypes.h, just to reference the same as the component type code -- without overriding NULL
 
 /**
@@ -105,4 +109,7 @@ bool_t MessageBuffer_doesMessageExists(MessageBuffer* buf);
   */
 void MessageBuffer_destroy(MessageBuffer* buf);
 
+#ifdef __cplusplus
+  }
+#endif
 #endif /* MESSAGEBUFFER_H_ */
