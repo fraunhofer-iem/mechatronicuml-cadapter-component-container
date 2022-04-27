@@ -85,14 +85,14 @@ int i = 0;
  * Generates the library function call for sending message using I2C for the given messageType of a DiscretePort.
 */]
 [template private generateSendI2cMessage(messageType : MessageType)]
-sendI2cMessage(i2cHandle->otherI2cAddress, "[messageType.getName() /]", msg, sizeof([messageType.getTypeName()/])); [comment msg is a pointer that is handed to the method as parameter /]
+sendI2cMessage(i2cHandle->otherI2cAddress, "[messageType.getName() /]", (byte *) msg, sizeof([messageType.getMessageType()/])); [comment msg is a pointer that is handed to the method as parameter /]
 [/template]
 
 [**
  * Generates the library function call for sending message using I2C for the given dataType of a DirectedTypedPort.
 */]
 [template private generateSendI2cMessage(dataType : DataType)]
-sendI2cMessage(i2cHandle->otherI2cAddress, "[dataType.getTypeName()/]", msg, sizeof([dataType.getTypeName()/])); [comment msg is a pointer that is handed to the method as parameter /]
+sendI2cMessage(i2cHandle->otherI2cAddress, "[dataType.getTypeName()/]", (byte *) msg, sizeof([dataType.getTypeName()/])); [comment msg is a pointer that is handed to the method as parameter /]
 [/template]
 
 [**

@@ -118,7 +118,7 @@ sendMqttMessage(mqttHandle->publishingTopic, "[dataType.getTypeName()/]", msg, s
 [template private generateFindBufferLoop(messageTypeName : String)]
 MessageBuffer* buffer = NULL;
 for (i = 0; i < mqttHandle->numOfSubs; i++){
-	if (strcmp(mqttHandle->subscribers['['/]i[']'/].messageTypeName, [messageTypeName /]) == 0){
+	if (strcmp(mqttHandle->subscribers['['/]i[']'/].messageTypeName, "[messageTypeName /]") == 0){
 		buffer = mqttHandle->subscribers['['/]i[']'/].buffer;
 		break;
 	}

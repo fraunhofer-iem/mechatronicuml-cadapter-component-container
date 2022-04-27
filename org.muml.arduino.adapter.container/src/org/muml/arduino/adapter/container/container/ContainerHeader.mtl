@@ -32,9 +32,6 @@
 #ifndef [getHeaderDefine(container)/]
 #define [getHeaderDefine(container)/]
 
-#ifdef __cplusplus
-  extern "C" {
-#endif	
 [includes(container, useSubDir)/]
 		
 /**
@@ -45,9 +42,7 @@
  */
 
 [containerOperations(container)/]
-#ifdef __cplusplus
-  }
-#endif
+
 #endif /* [getHeaderDefine(container)/] */
 	[/file]
 [/template]	
