@@ -29,12 +29,12 @@
 
 
 [template public generateBuilderStruct(component:Component)]
-/**
-*  
-* @brief The options a port declares
-* @details These options are used in the struct [component.getBuilderStructName()/]
-*/ 
-struct port_option {
+						/**
+						*  
+						* @brief The options a port declases
+						* @details Thes options are used in the struct [component.getBuilderStructName()/]
+						*/ 
+	struct port_option {
 	union {
 		struct{
 		uint16_T pubID;
@@ -44,22 +44,14 @@ struct port_option {
 			int domainID;
 			int partition;
 		} dds_option;
-		struct {
-			uint8_T ownAddress;
-			uint8_T otherAddress;
-		} i2c_option;
-		struct {
-			char* publishingTopic;
-			char* subscriptionTopic;
-		} mqtt_option;
 	};
 };
 
-/**
-*  
-* @brief The builder struct for the Component Type: [component.getName()/]
-* @details This is a realization of the builder pattern, the struct represents a Concrete Builder
-*/ 
+						/**
+						*  
+						* @brief The builder struct for the Component Type: [component.getName()/]
+						* @details This is a realization of the builder pattern, the struct represents a Concrete Builder
+						*/ 
 typedef struct [component.getBuilderStructName()/] {
 		uint8_T ID;
 		//create Builder Functions for each Port
@@ -70,8 +62,6 @@ typedef struct [component.getBuilderStructName()/] {
 		[/for]
 		[for (cPort : ContinuousPort | component.ports->filter(ContinuousPort))]
 		void (*[getVariableName(cPort)/]AccessFunction) ([cPort.dataType.getTypeName()/]*); /**access function pointer for continuous port */
-		/*void (*[getVariableName(cPort)/]InitFunction)(); /**initialization function pointer for continuous port */
-		/*void (*[getVariableName(cPort)/]TerminateFunction)(); /**destruction function pointer for continuous port */
 		/*FIXME add initialize and destroy function pointer*/
 		[/for]
 }[component.getBuilderStructName()/];

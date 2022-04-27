@@ -27,6 +27,7 @@
 
 [import org::muml::arduino::adapter::container::communication::ArduinoCommunication /]
 [import org::muml::arduino::adapter::container::container::ContainerComponentInstanceConfiguration /]
+[import org::muml::arduino::adapter::container::container::ContainerBuilder /]
 
 [**
  * Generate the implementation of a container including the APImapping stubs 
@@ -37,8 +38,10 @@
 [file (path+getFileNameCpp(container, false, useSubDir), false, 'UTF-8')] [comment Cpp for Arduino /]
 [includes(container, useSubDir)/]
 
+[comment generate a Builder Struct adapted for Arduino /]
+[generateArduinoBuilderStruct(container.componentType)/]
+
 [comment Reuse the C Adapter ContainerBuilder here/]
-[generateBuilderStruct(container.componentType)/]
 [generateComponentInstancePool(container)/]
 
 [comment generate the Arduino-specific methods to check if a message exists, send receive messages used by the component/]
