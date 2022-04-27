@@ -60,6 +60,10 @@ static struct MqttConfig* mqttConfig;
 [for (ci : ComponentInstance | cis->filter(AtomicComponentInstance)->select(c:AtomicComponentInstance |  c.componentType=ComponentKind::SOFTWARE_COMPONENT)->asOrderedSet())]
 [/for]
 void setup(){
+	#ifdef DEBUG
+	Serial.begin(9600);
+	Serial.println("Initialization starting...");
+	#endif
 	[for (ci : ComponentInstance | cis)]
 		[if (ci.componentType.oclIsKindOf(AtomicComponent))]
 	atomic_c[i/]= [ci.componentType.getContainerComponentCreateMethodName()/]([ci.getIdentifierVariableName()/]);
@@ -98,8 +102,7 @@ void setup(){
 	[/if]
 
 	#ifdef DEBUG
-	Serial.begin(9600);
-	Serial.println("Initialization done...start execution.\n");
+	Serial.println("Initialization done...start execution.");
 	#endif
 }
 

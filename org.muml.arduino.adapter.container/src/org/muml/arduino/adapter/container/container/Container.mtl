@@ -59,7 +59,7 @@
 [/file]
 
 [comment generate the files in APImappings/... that contain the access command stubs /]
-[generateAccessCommandStubsAsFiles(container, container.componentInstanceConfigurations)/]
+[generateAccessCommandStubsAsFiles(container, container.componentInstanceConfigurations, useSubDir)/]
 [/template]	
 
 

@@ -83,14 +83,14 @@ int i;
  * Generate the library call for the sending of a message using MQTT for a DiscretePort.
 */]
 [template private generateMqttSendingMethod(messageType : MessageType)]
-sendMqttMessage(mqttHandle->publishingTopic, "[messageType.getName()/]", msg, sizeof([messageType.getMessageType()/])); [comment msg is a pointer that is handed to the method as parameter /]
+sendMqttMessage(mqttHandle->publishingTopic, "[messageType.getName()/]", (byte*) msg, sizeof([messageType.getMessageType()/])); [comment msg is a pointer that is handed to the method as parameter /]
 [/template]
 
 [**
  * Generate the library call for the sending of a message using MQTT for a DirectedTypedPort.
 */]
 [template private generateMqttSendingMethod(dataType : DataType)]
-sendMqttMessage(mqttHandle->publishingTopic, "[dataType.getTypeName()/]", msg, sizeof([dataType.getTypeName()/])); [comment msg is a pointer that is handed to the method as parameter /]
+sendMqttMessage(mqttHandle->publishingTopic, "[dataType.getTypeName()/]", (byte*) msg, sizeof([dataType.getTypeName()/])); [comment msg is a pointer that is handed to the method as parameter /]
 [/template]
 
 

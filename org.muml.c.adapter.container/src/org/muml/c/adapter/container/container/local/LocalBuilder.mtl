@@ -49,7 +49,7 @@
 */
 static PortHandle* [port.getMethodNameForLocalPortBuilder()/]([port.component.getBuilderStructName()/]* b, PortHandle *ptr){
 	ptr->type = PORT_HANDLE_TYPE_LOCAL;
-	LocalHandle* hndl = malloc(sizeof(LocalHandle)+[port.receiverMessageTypes->size()/]*sizeof(LocalSubscriber));
+	LocalHandle* hndl = (LocalHandle*) malloc(sizeof(LocalHandle)+[port.receiverMessageTypes->size()/]*sizeof(LocalSubscriber));
 	ptr->concreteHandle = hndl;
 	hndl->pubID = b->[port.name.toUpper()/]_op.local_option.pubID;
 	hndl->subID = b->[port.name.toUpper()/]_op.local_option.subID;
