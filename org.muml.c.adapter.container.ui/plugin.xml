@@ -19,7 +19,7 @@
                enablesFor="+"
                id="org.muml.c.adapter.container.ui.popupMenus.acceleoGenerateCAction"
                icon="icons/default.gif"
-               label="Generate Component Container Code_Workspace"
+               label="Generate Component Container Code"
                menubarPath="org.muml.menu/mumlContainer"/>
       </objectContribution>
    </extension>
