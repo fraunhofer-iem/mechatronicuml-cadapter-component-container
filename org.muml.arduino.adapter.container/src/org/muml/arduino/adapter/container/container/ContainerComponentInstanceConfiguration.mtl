@@ -91,6 +91,9 @@
 	[for (cPort : ContinuousPort | container.componentType.ports->filter(ContinuousPort))]
 	[let filename : String = componentInstanceCfg.componentInstance.getIdentifierVariableName()+getVariableName(cPort)+'accessCommand']
 	[file ('APImappings/'+filename+'.h', false, 'Utf8')]
+#ifdef __cplusplus
+extern "C" {
+#endif
 // [protected ('FORINCLUDES')]
 
 // [/protected]
@@ -100,6 +103,9 @@ void [componentInstanceCfg.componentInstance.getIdentifierVariableName()/][getVa
 // [protected ('API')]
 
 // [/protected]
+#ifdef __cplusplus
+}
+#endif
 	[/file]	
 	[file ('APImappings/'+filename+'.c', false, 'Utf8')]
 #include "[filename+'.h'/]"
