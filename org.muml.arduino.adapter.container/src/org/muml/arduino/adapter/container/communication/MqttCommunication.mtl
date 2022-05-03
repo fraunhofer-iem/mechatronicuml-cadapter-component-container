@@ -38,7 +38,7 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
 	[for (messageType : MessageType | port.oclAsType(DiscretePort).receiverMessageTypes)]
 		[let j : Integer = i-1 ]
 			[let messageBuffer : MessageBuffer = port.oclAsType(DiscretePort).receiverMessageBuffer->select(buffer : MessageBuffer | buffer.messageType->exists(msgT : MessageType | msgT=messageType))->first()]
-	createAndRegisterMqttSubscriber(&(handle->subscribers['['/][j/][']'/]),
+	initAndRegisterMqttSubscriber(&(handle->subscribers['['/][j/][']'/]),
 									b->[port.name.toUpper()/]_op.mqtt_option.subscriptionTopic,
 									"[messageType.getName() /]",
 									[messageBuffer.bufferSize.value /],
@@ -52,7 +52,7 @@ static PortHandle* [getMethodNameForMqttPortHandleBuilder(port)/]([port.componen
 	MqttHandle* handle = malloc(sizeof(MqttHandle)+	[if (port.oclAsType(DirectedTypedPort).inPort)]1[else]0[/if]*sizeof(MqttSubscriber));
 	handle->numOfSubs = 1;
 	//The message ID is 0, the buffer holds 1 item
-	createAndRegisterMqttSubscriber(&(handle->subscribers['['/]0[']'/], 
+	initAndRegisterMqttSubscriber(&(handle->subscribers['['/]0[']'/], 
 									b->[port.name.toUpper()/]_op.mqtt_option.subscriptionTopic,
 									"[port.oclAsType(DirectedTypedPort).dataType.getTypeName()/]", 1, sizeof([port.oclAsType(DirectedTypedPort).dataType.getTypeName()/]), true);
 	[/if]

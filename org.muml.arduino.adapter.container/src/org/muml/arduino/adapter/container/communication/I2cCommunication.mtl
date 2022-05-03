@@ -43,7 +43,7 @@ static PortHandle* [getMethodNameForI2cPortHandleBuilder(port)/]([port.component
 	[for (messageType : MessageType | port.oclAsType(DiscretePort).receiverMessageTypes)]
 		[let j : Integer = i-1 ]
 			[let messageBuffer : MessageBuffer = port.oclAsType(DiscretePort).receiverMessageBuffer->select(buffer : MessageBuffer | buffer.messageType->exists(msgT : MessageType | msgT=messageType))->first()]
-	createAndRegisterI2cReceiver(&(handle->receivers['['/][j/][']'/]), 
+	initAndRegisterI2cReceiver(&(handle->receivers['['/][j/][']'/]), 
 								"[messageType.getName()/]",
 								[messageBuffer.bufferSize.value /],
 								sizeof([messageType.getMessageType()/]),
@@ -56,7 +56,7 @@ static PortHandle* [getMethodNameForI2cPortHandleBuilder(port)/]([port.component
 	I2cHandle* handle = malloc(sizeof(I2cHandle)+[if (port.oclAsType(DirectedTypedPort).inPort)]1[else]0[/if]*sizeof(I2cReceiver));
 	handle->numOfReceivers = 1
 	//The message ID is 0, the buffer holds 1 item
-	createAndRegisterI2cReceiver(&(handle->receivers['['/]0[']'/]), "[port.oclAsType(DirectedTypedPort).dataType.getTypeName()/]", 1, sizeof([port.oclAsType(DirectedTypedPort).dataType.getTypeName()/]), true);
+	initAndRegisterI2cReceiver(&(handle->receivers['['/]0[']'/]), "[port.oclAsType(DirectedTypedPort).dataType.getTypeName()/]", 1, sizeof([port.oclAsType(DirectedTypedPort).dataType.getTypeName()/]), true);
 	[/if]
 	handle->ownI2cAddress = b->[port.name.toUpper()/]_op.i2c_option.ownAddress;
 	handle->otherI2cAddress = b->[port.name.toUpper()/]_op.i2c_option.otherAddress;
