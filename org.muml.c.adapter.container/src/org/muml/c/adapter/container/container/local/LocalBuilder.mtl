@@ -72,7 +72,7 @@ static PortHandle* [port.getMethodNameForLocalPortBuilder()/]([port.component.ge
 [template private generateBuilderForPortHandleLocal(port : DirectedTypedPort, portInstanceCfg : Collection(PortInstanceConfiguration_Local))]
 static PortHandle* [port.getMethodNameForLocalPortBuilder()/]([port.component.getBuilderStructName()/]* b, PortHandle *ptr){
 	ptr->type = PORT_HANDLE_TYPE_LOCAL;
-	LocalHandle* hndl = malloc(sizeof(LocalHandle)+[if (port.inPort)]1[else]0[/if]*sizeof(LocalSubscriber));
+	LocalHandle* hndl = (LocalHandle*) malloc(sizeof(LocalHandle)+[if (port.inPort)]1[else]0[/if]*sizeof(LocalSubscriber));
 	ptr->concreteHandle = hndl;
 	hndl->pubID = b->[port.name.toUpper()/]_op.local_option.pubID;
 	hndl->subID = b->[port.name.toUpper()/]_op.local_option.subID;

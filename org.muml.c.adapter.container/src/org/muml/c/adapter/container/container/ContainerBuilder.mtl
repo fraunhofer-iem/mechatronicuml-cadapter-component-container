@@ -104,7 +104,7 @@ static const [component.getBuilderStructName()/] INIT_BUILDER = { 0, [for (port 
 [/if]	
 		//For each port initialize it
 		[for (port : Port | cmp.ports)]
-			if(b->[port.name.toUpper()/] != PORT_DEACTIVATED) {
+		if(b->[port.name.toUpper()/] != PORT_DEACTIVATED) {
 			instancePool['['/]pool_index[']'/].[port.getVariableName(true)/].status = b->[port.name.toUpper()/];
 			instancePool['['/]pool_index[']'/].[port.getVariableName(true)/].handle = (PortHandle*) malloc(sizeof(PortHandle));
  			instancePool['['/]pool_index[']'/].[port.getVariableName(true)/].handle->port = &(instancePool['['/]pool_index[']'/].[port.getVariableName(true)/]);
