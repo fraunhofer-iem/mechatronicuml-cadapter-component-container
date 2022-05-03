@@ -48,6 +48,10 @@ static struct MqttConfig* mqttConfig;
 #include "[container.getFileName(container, true, useSubDir)/]"
 [/for]
 
+// [protected ('DEVICEINITINCLUDES')]
+/* TODO: if devices or libraries are used which need an initialization, include the headers here */
+// [/protected]
+
 
 [let cis : OrderedSet(ComponentInstance) = ecuConfig.componentContainers.componentInstanceConfigurations.componentInstance->asOrderedSet()]
 //variable for component Instances
@@ -64,6 +68,9 @@ void setup(){
 	Serial.begin(9600);
 	Serial.println("Initialization starting...");
 	#endif
+	// [protected ('DEVICEINIT')]
+	/* TODO: if devices are used which need an initialization, call the functionse here */
+	// [/protected]
 	[for (ci : ComponentInstance | cis)]
 		[if (ci.componentType.oclIsKindOf(AtomicComponent))]
 	atomic_c[i/]= [ci.componentType.getContainerComponentCreateMethodName()/]([ci.getIdentifierVariableName()/]);
