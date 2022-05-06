@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="main" name="org.muml.c.adapter.container">
+<project default="main" name="org.muml.arduino.adapter.container">
     <property name="ECLIPSE_HOME" value="../../../../MUML_1_0-win32-x86_64_CLEAN2/MUML_1_0-win32-x86_64/MUML_1_0"/>
     <property name="ECLIPSE_WORKSPACE" value="../../.."/>
 
     <!-- The classpath with only the dependencies used by the project -->
-    <path id="org.muml.c.adapter.container.libraryclasspath">
-        <pathelement location="${ECLIPSE_WORKSPACE}/org.muml.c.adapter.container/bin"/>
+    <path id="org.muml.arduino.adapter.container.libraryclasspath">
+        <pathelement location="${ECLIPSE_WORKSPACE}/org.muml.arduino.adapter.container/bin"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.runtime_3.12.0.v20160606-1342.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/javax.inject_1.0.0.v20091030.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.osgi_3.11.2.v20161107-1947.jar"/>
@@ -19,6 +19,7 @@
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore_2.12.0.v20160420-0247.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.common_2.12.0.v20160420-0247.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore.xmi_2.12.0.v20160420-0247.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.muml.core.common_1.0.0.201612230936.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl_3.6.0.v20160523-1914.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/lpg.runtime.java_2.0.17.v201004271640.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl.common_1.4.0.v20160521-2033.jar"/>
@@ -30,30 +31,28 @@
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen.ecore_2.12.0.v20160526-0356.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen_2.11.0.v20160526-0356.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/com.google.guava_15.0.0.v201403281430.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.muml.core.common_1.0.0.201612230936.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.muml.pim.actionlanguage_1.0.0.201612230944.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.muml.pm.software_1.0.0.201612230948.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.opendds.modeling.model_3.3.0.201209281318.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/de.upb.swt.core_1.0.0.201612230936.jar"/>
     </path>
 
-    <path id="org.muml.c.adapter.container.classpath">
-        <path refid="org.muml.c.adapter.container.libraryclasspath"/>
+    <path id="org.muml.arduino.adapter.container.classpath">
+        <path refid="org.muml.arduino.adapter.container.libraryclasspath"/>
     </path>
 
     <!-- The classpath with only the jars available in the plugin folder of Eclipse -->
-    <path id="org.muml.c.adapter.container.libraryclasspath.alljars">
-        <pathelement location="../org.muml.c.adapter.container/bin"/>
+    <path id="org.muml.arduino.adapter.container.libraryclasspath.alljars">
+        <pathelement location="../org.muml.arduino.adapter.container/bin"/>
         <fileset dir="${ECLIPSE_HOME}/plugins/" includes="*.jar"/>
     </path>
 
-    <path id="org.muml.c.adapter.container.classpath.alljars">
-        <path refid="org.muml.c.adapter.container.libraryclasspath.alljars"/>
+    <path id="org.muml.arduino.adapter.container.classpath.alljars">
+        <path refid="org.muml.arduino.adapter.container.libraryclasspath.alljars"/>
     </path>
 
     <!-- The default task with the jars used by this project -->
     <target name="main">
-        <java classname="org.muml.c.adapter.container.Main" classpathref="org.muml.c.adapter.container.classpath">
+        <java classname="org.muml.arduino.adapter.container.main.Main" classpathref="org.muml.arduino.adapter.container.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>
@@ -64,7 +63,7 @@
         Keep in mind that having two versions of the same jar can create problems
     -->
     <target name="main.alljars">
-        <java classname="org.muml.c.adapter.container.Main" classpathref="org.muml.c.adapter.container.classpath">
+        <java classname="org.muml.arduino.adapter.container.main.Main" classpathref="org.muml.arduino.adapter.container.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>
